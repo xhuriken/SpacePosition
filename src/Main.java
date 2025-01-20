@@ -11,7 +11,7 @@ public class Main {
             //Le jeu attribue un pseudo aux deux joueurs et affiche le plateau de jeux.
             // De manière aléatoire un joueur est désigné pour commencer à jouer.
         //STORY 4:
-            //On réfléchiras à la meilleure optimisation de play, mais on va essayer de faire en plein de petit bout de code different
+            //On réfléchiras à la meilleure optimisation de play,git a mais on va essayer de faire en plein de petit bout de code different
             //DONT CELUI DE LA STORY 4 LOL VOUS COMMENCEZ A CAPTER OU KOA LES BOYZ (je deviens fous je parle tout seul dans des commentaire donnez moi de l'argent)
             //Move(player) -> fonction pour déplacer le joueur donné OUAIIII
         //STORY 5:
