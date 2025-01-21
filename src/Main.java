@@ -5,7 +5,10 @@ import javax.sound.sampled.Clip;
 public class Main {
     public static void main(String[] args) {
 
-        Game gameG = new Game((byte) 2);
+        //Game gameG = new Game((byte) 2);
+        MainMenu.SetupMenu();
+
+
 
         //STORY 1:
             //Faire un menu pour regrouper plusieurs fonctionalité (chacune dans une fonction quoi)

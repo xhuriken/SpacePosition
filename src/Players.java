@@ -12,25 +12,24 @@ public class Players {
         this.y = y;
     }
 
-    public short GetX(){
+    public short getX(){
         return x;
     }
 
-    public short GetY(){
+    public short getY(){
         return y;
     }
 
+    public String getName() {
+        return name;
+    }
     //Function to move the player
     /**
-     * 
      * @param y
      * @param x
-     * @param players
-     * 
-     * Function that manages the player's movements 
      */
 
-    public void Mouve(short y , short x, Players players , char[][] grid){ 
+    public void move(short y , short x, char[][] grid){
         String input;
         boolean Choice = true;
         //Request the player to enter a letter

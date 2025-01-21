@@ -5,8 +5,7 @@ import java.util.Scanner;
 
 public class MainMenu {
 
-    public static void main(String[] args) {
-
+    public static void SetupMenu(){
         // Load and play background music
         Clip ambiance = loadSound("Theme.wav");
 
@@ -115,8 +114,54 @@ public class MainMenu {
 
     // Method to simulate playing the game
     private static void playGame() {
-        System.out.println("You chose to play the game!");
-        System.out.println("Good luck and have fun!");
+        Scanner sc = new Scanner(System.in);
+
+        // Ask the number of players
+        System.out.println("How many players? (2 to 4)");
+        int nbPlayers = sc.nextInt();
+
+        // Initialize the game
+        Game game = new Game((byte) nbPlayers);
+
+        boolean gameRunning = true;
+        int currentPlayerIndex = 0;
+
+        while (gameRunning) {
+            // Display the grid
+            game.getGrid().displayGrid();
+
+            // Get the current player
+            Players currentPlayer = game.getPlayers()[currentPlayerIndex];
+            System.out.println("\n" + currentPlayer.getName() + "'s turn!");
+
+            // Move the player
+            currentPlayer.move(currentPlayer.getY(), currentPlayer.getX(), game.getGrid().grid);
+
+            // Destroy a square
+            System.out.print("Enter coordinates to destroy boxes like 'x,y ': ");
+            Scanner sc2 = new Scanner(System.in);
+            String coords = sc2.next();
+
+            //Split the coordinates
+            String[] parts = coords.split(",");
+            short CoordX = Short.parseShort(parts[0]);
+            short CoordY = Short.parseShort(parts[1]);
+
+            game.getGrid().destroy(CoordX, CoordY);
+
+            // Check if the game is over
+            //(we need to create isGameOver)
+//            if (isGameOver(game)) {
+//                gameRunning = false;
+//                System.out.println("\nGame Over! " + currentPlayer.getName() + " wins!");
+//            } else {
+//                // Move to the next player
+//                currentPlayerIndex = (currentPlayerIndex + 1) % nbPlayers;
+//            }
+
+            currentPlayerIndex = (currentPlayerIndex + 1) % nbPlayers;
+
+        }
     }
 
     // Method to display game rules
@@ -141,7 +186,8 @@ public class MainMenu {
         System.out.println("                                       " + BLUE +"[Célestin HONVAULT]");
         System.out.println("                                       [Mathéo Beaudet]");
         System.out.println("                                       [Clement Seurin Le Goffic]");
-        System.out.println("                                       [Mateis Bourlet]\n" + RESET);
+        System.out.println("                                       [Mateis Bourlet]");
+        System.out.println("                                       [Steve Jobs]\n" + RESET);
         System.out.println("                                       Educational project.");
         System.out.println("                 ================================================================== ");
     }

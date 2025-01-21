@@ -35,4 +35,11 @@ public class Game {
         }
     }
 
+    public Players[] getPlayers() {
+        return players;
+    }
+
+    public Grid getGrid() {
+        return grid;
+    }
 }
