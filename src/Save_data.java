@@ -15,14 +15,12 @@ public class Save_data{
             }
         }
         grid[0][0] = 'X';
+        grid[9][10] = 'X';
 
         // Init 2 players fictifs
         players = new Players[2];
         players[0] = new Players("didi", (short) 5, (short) 6);
         players[1] = new Players("dede", (short) 6, (short) 6);
-
-        System.out.println("Joueur 1 : " + players[0].GetName() + " X : " + players[0].GetX() + " Y : " + players[0].GetY());
-        System.out.println("Joueur 2 : " + players[1].GetName() + " X : " + players[1].GetX() + " Y : " + players[1].GetY());
     }
     
     public void save(){
