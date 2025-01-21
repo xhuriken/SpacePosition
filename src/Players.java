@@ -1,6 +1,7 @@
 import java.util.Scanner;
+import java.io.Serializable;
 
-public class Players {
+public class Players implements Serializable {
 
     String name;
     short x;
@@ -12,11 +13,11 @@ public class Players {
         this.y = y;
     }
 
-    public short getX(){
+    public short getX() {
         return x;
     }
 
-    public short getY(){
+    public short getY() {
         return y;
     }
 
@@ -96,27 +97,31 @@ public class Players {
             short newY = currentPlayer.y;
 
             switch (input) {
-                case "z": newX -= 1; break; // Move up
-                case "q": newY -= 1; break; // Move left
-                case "s": newX += 1; break; // Move down
-                case "d": newY += 1; break; // Move right
+                case "z":
+                    newX -= 1;
+                    break; // Move up
+                case "q":
+                    newY -= 1;
+                    break; // Move left
+                case "s":
+                    newX += 1;
+                    break; // Move down
+                case "d":
+                    newY += 1;
+                    break; // Move right
                 default:
                     System.out.println("Veuillez entrer une lettre valide");
                     continue;
             }
-
             //Check if the new position is valid
             if (newX >= 0 && newX < grid.length && newY >= 0 && newY < grid[0].length && grid[newX][newY] == '.') {
                 // Update the grid: clear old position
                 grid[currentPlayer.x][currentPlayer.y] = '.';
-
                 // Update player position
                 currentPlayer.x = newX;
                 currentPlayer.y = newY;
-
                 // Mark the new position in the grid
                 grid[newX][newY] = 'J';
-
                 validMove = true;
                 System.out.println("Move successful!");
             } else {
@@ -124,35 +129,4 @@ public class Players {
             }
         }
     }
-    //Fonction move(positionX, positionY, grille, joueurCourant)
-//    Tant que le déplacement n'est pas valide :
-//    Afficher "Entrez une direction : 'z' (haut), 'q' (gauche), 's' (bas), 'd' (droite)"
-//    Lire la direction (input)
-//
-//    Initialiser nouvellePositionX = positionX
-//    Initialiser nouvellePositionY = positionY
-//
-//    Selon la direction :
-//    Si 'z' (haut) :
-//    nouvellePositionY = positionY - 1
-//    Si 'q' (gauche) :
-//    nouvellePositionX = positionX - 1
-//    Si 's' (bas) :
-//    nouvellePositionY = positionY + 1
-//    Si 'd' (droite) :
-//    nouvellePositionX = positionX + 1
-//    Sinon :
-//    Afficher "Entrée invalide, essayez encore"
-//    Recommencer la boucle
-//
-//    Si nouvellePositionX et nouvellePositionY sont dans les limites de la grille ET la case correspondante est vide ('.') :
-//    Mettre à jour la grille pour effacer l'ancienne position du joueur (grille[positionX][positionY] = '.')
-//    Mettre à jour la position du joueur (joueurCourant.positionX = nouvellePositionX, joueurCourant.positionY = nouvellePositionY)
-//    Mettre à jour la grille avec la nouvelle position du joueur (grille[nouvellePositionX][nouvellePositionY] = 'J')
-//    Afficher "Déplacement réussi"
-//    Terminer la boucle
-//    Sinon :
-//    Afficher "Déplacement invalide, essayez encore"
-//    Fin Fonction
-
 }

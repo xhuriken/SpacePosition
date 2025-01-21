@@ -29,4 +29,23 @@ public class Main {
         //STORY 6:
             // Ca commence a être les ajout qui serve a rien donc j'ai la flm allez bisous jvous passe le salam quoi
     }
+
+    public static synchronized void playSound(final String url) {
+        new Thread(new Runnable() {
+            // The wrapper thread is unnecessary, unless it blocks on the
+            // Clip finishing; see comments.
+            public void run() {
+                try {
+                    Clip clip = AudioSystem.getClip();
+                    AudioInputStream inputStream = AudioSystem.getAudioInputStream(
+                            Main.class.getResourceAsStream("/sounds/" + url));
+                    clip.open(inputStream);
+                    clip.start();
+                    System.out.println("bite");
+                } catch (Exception e) {
+                    System.err.println(e.getMessage());
+                }
+            }
+        }).start();
+    }
 }
