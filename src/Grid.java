@@ -51,9 +51,12 @@ public class Grid {
         //As long as Choice is true, we continue
         while (Choice == true){
             System.out.print("Enter coordinates to destroy boxes: ");
-            int CoordX = scanner.nextInt();
-            int CoordY = scanner.nextInt();
+            int Coords = scanner.nextInt();
 
+            //Convert the coordinates to the table
+            short CoordX = (short) (Coords / 10); 
+            short CoordY = (short) (Coords % 10);
+            
             //Check whether the coordinates are outside the table 
             if (CoordX >= 0 && CoordX < grid.length && CoordY >= 0 && CoordY < grid[0].length) {
                 //Check if the box is empty
