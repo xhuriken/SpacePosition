@@ -34,12 +34,23 @@ public class Game {
             grid.place(player);
         }
     }
-
     public Players[] getPlayers() {
         return players;
     }
 
     public Grid getGrid() {
         return grid;
+    }
+
+    //function endgame
+    public boolean endgame(Players currentPlayers , char[][] grid) {
+
+        int cordx = currentPlayers.GetX();
+        int cordy = currentPlayers.GetY();
+
+
+        if (grid[cordx + 1][cordy] != '.' & grid[cordx - 1][cordy] != '.' & grid[cordx][cordy + 1] != '.' & grid[cordx][cordy - 1] != '.') {
+            System.out.println("Vous ne pouvez plus bouger");
+        }return true;
     }
 }
