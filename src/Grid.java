@@ -6,7 +6,7 @@ public class Grid {
     public char[][] grid;
 
     public Grid(){
-        grid = new char[11][10]; //li / col
+        grid = new char[10][11];
         initializeGrid();
     }
 
@@ -51,7 +51,7 @@ public class Grid {
      * @param x
      * @param y
      */
-    public void destroy(short x, short y){
+    public void destroy(){
     boolean Choice = true;
         //Request the player to enter a coordinates
         Scanner scanner = new Scanner(System.in);

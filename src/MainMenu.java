@@ -134,20 +134,17 @@ public class MainMenu {
             Players currentPlayer = game.getPlayers()[currentPlayerIndex];
             System.out.println("\n" + currentPlayer.getName() + "'s turn!");
 
+            System.out.println(currentPlayer.getX() + " " + currentPlayer.getY());
             // Move the player
-            currentPlayer.move(currentPlayer.getY(), currentPlayer.getX(), game.getGrid().grid);
+
+
+
+            currentPlayer.move(currentPlayer.getX(), currentPlayer.getY(), game.getGrid().grid, currentPlayer);
+
+            game.getGrid().displayGrid();
 
             // Destroy a square
-            System.out.print("Enter coordinates to destroy boxes like 'x,y ': ");
-            Scanner sc2 = new Scanner(System.in);
-            String coords = sc2.next();
-
-            //Split the coordinates
-            String[] parts = coords.split(",");
-            short CoordX = Short.parseShort(parts[0]);
-            short CoordY = Short.parseShort(parts[1]);
-
-            game.getGrid().destroy(CoordX, CoordY);
+            game.getGrid().destroy();
 
             // Check if the game is over
             //(we need to create isGameOver)
@@ -159,6 +156,7 @@ public class MainMenu {
 //                currentPlayerIndex = (currentPlayerIndex + 1) % nbPlayers;
 //            }
 
+            //Skip to next player
             currentPlayerIndex = (currentPlayerIndex + 1) % nbPlayers;
 
         }
