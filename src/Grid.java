@@ -1,3 +1,6 @@
+
+import java.util.Scanner;
+
 public class Grid {
 
     public char[][] grid;
@@ -32,5 +35,38 @@ public class Grid {
     }
     public void place(Players player) {
         grid[player.GetX()][player.GetY()] = 'J';
+    }
+
+
+    /**
+     * Case destruction function
+     * @param x
+     * @param y
+     */
+    public void destroyed (short x, short y){
+    boolean Choice = true;
+        //Request the player to enter a coordinates
+        Scanner scanner = new Scanner(System.in);
+        
+        //As long as Choice is true, we continue
+        while (Choice == true){
+            System.out.print("Enter coordinates to destroy boxes: ");
+            int CoordX = scanner.nextInt();
+            int CoordY = scanner.nextInt();
+
+            //Check whether the coordinates are outside the table 
+            if (CoordX >= 0 && CoordX < grid.length && CoordY >= 0 && CoordY < grid[0].length) {
+                //Check if the box is empty
+                if (grid[CoordX][CoordY] == '.') {
+                    grid[CoordX][CoordY] = '#'; 
+                    System.out.println("Box destroyed!");
+                    Choice = false; 
+                } else {
+                    System.out.println("The case is occupied ;) Try again!");
+                }
+            } else {
+                System.out.println("Coordinates out of bounds :( Try again !");
+            }
+        }
     }
 }
