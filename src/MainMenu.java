@@ -3,161 +3,190 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
-    public class MainMenu {
+public class MainMenu {
 
-        public static void main(String[] args) {
+    public static void main(String[] args) {
 
-            Clip ambiance = chargerSon("Theme.wav");
+        // Load and play background music
+        Clip ambiance = loadSound("Theme.wav");
 
-            if (ambiance != null) {
-                reglerVolume(ambiance, 0.5f);
-                ambiance.loop(Clip.LOOP_CONTINUOUSLY);
+        if (ambiance != null) {
+            setVolume(ambiance, 0.5f); // Set volume to 50%
+            ambiance.loop(Clip.LOOP_CONTINUOUSLY); // Loop continuously
+        }
+
+        Scanner scanner = new Scanner(System.in);
+        boolean quit = false;
+
+        while (!quit) {
+            // Display the main menu
+            drawTitle();
+            displayMainMenu();
+
+            // Get user's choice
+            System.out.print("                 Enter your choice: ");
+            String choice = scanner.nextLine();
+
+            // Handle the user's choice
+            switch (choice) {
+                case "1":
+                    playGame();
+                    waitForReturnToMenu();
+                    break;
+                case "2":
+                    showRules();
+                    waitForReturnToMenu();
+                    break;
+                case "3":
+                    showCredits();
+                    waitForReturnToMenu();
+                    break;
+                case "4":
+                    quit = true;
+                    System.out.println("Thanks for playing. See you next time!");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+                    break;
             }
 
-            Scanner scanner = new Scanner(System.in);
-            boolean quit = false;
-
-            while (!quit) {
-                // Afficher le menu principal
-                afficherMenu();
-
-                // Lire le choix de l'utilisateur
-                System.out.print("Entrez votre choix : ");
-                String choix = scanner.nextLine();
-
-                // Traiter le choix
-                switch (choix) {
-                    case "1":
-                        jouerAuJeu();
-                        RetourMenu();
-                        break;
-                    case "2":
-                        afficherRegles();
-                        RetourMenu();
-                        break;
-                    case "3":
-                        afficherCredits();
-                        RetourMenu();
-                        break;
-                    case "4":
-                        quit = true;
-                        System.out.println("Merci d'avoir joué. À bientôt !");
-                        break;
-                    default:
-                        System.out.println("Choix invalide. Veuillez réessayer.");
-                        break;
-                }
-
-                // Ligne vide pour lisibilité
-                System.out.println();
-            }
-
-            if (ambiance != null) {
-                ambiance.stop();
-                ambiance.close();
-            }
-
-            scanner.close();
+            // Add a blank line for readability
+            System.out.println();
         }
 
-        // Méthode pour afficher le menu principal
-        private static void afficherMenu() {
-
-            final String RESET = "\u001B[0m";
-            final String RED = "\u001B[31m";
-            final String GREEN = "\u001B[32m";
-            final String YELLOW = "\u001B[33m";
-            final String BLUE = "\u001B[34m";
-            final String PURPLE = "\u001B[35m";
-            final String CYAN = "\u001B[36m";
-
-            System.out.println("=== MENU PRINCIPAL === \n");
-            System.out.println( GREEN + "⠀⠀⠀ ⣀⣴⣢⣉⣉⠉⠉⠒⠤⡀⠀⣀⣀⣀⣀⣀⠀\n" +
-                                        "⠀⢀⣼⣿⣿⣿⣿⣿⣿⣶⣶⣦⣿⠏⠹⣿⣿⡟⣰⣿\n" +
-                                        "⠀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃⣠⣽⠳⠆⣰⣿⠃\n" +
-                                        "⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⢁⡘⣿⣿⢂⣾⣿⡃⠀\n" +
-                                        "⢸⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⣨⠻⢆⣴⣿⠟⠻⡷⠀\n" +
-                                        "⠀⢿⣿⣿⣿⠿⠋⠁⣿⣿⣿⣇⣴⣿⠟⠁⠀⠀⠀⠀ \n" +
-                                        "⠀⣼⡉⣉⣴⣦⡼⣷⠉⣩⣿⣿⣟⠁⠀⠀⠀⠀⠀⠀ \n" +
-                                        "⣸⣿⣿⣿⠿⠿⣣⣴⣿⡿⠋⠙⠿⠃⠀⠀⠀⠀⠀⠀ \n" +
-                                        "⡿⢟⣋⣭⣶⣿⡿⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀  \n" +
-                                        "⢿⡿⠿⠟⠋⢿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀  \n" + RESET);
-            System.out.println("1. " + CYAN + "Jeu" + RESET);
-            System.out.println("2. " + GREEN + "Règles" + RESET);
-            System.out.println("3. " + YELLOW + "Crédits" + RESET);
-            System.out.println( "4. " + RED + "Quitter" + RESET);
-            System.out.println("======================");
+        // Stop and close background music
+        if (ambiance != null) {
+            ambiance.stop();
+            ambiance.close();
         }
 
-        // Méthode pour simuler l'action de jouer au jeu
-        private static void jouerAuJeu() {
-            System.out.println("Vous avez choisi de jouer au jeu !");
-            System.out.println("Bonne chance et amusez-vous bien !");
-        }
-
-        // Méthode pour afficher les règles du jeu
-        private static void afficherRegles() {
-            System.out.println("=== RÈGLES DU JEU ===");
-            System.out.println("1. Suivez les instructions affichées.");
-            System.out.println("2. Respectez les règles pour gagner.");
-            System.out.println("3. Amusez-vous !");
-            System.out.println("=====================");
-        }
-
-        // Méthode pour afficher les crédits
-        private static void afficherCredits() {
-            System.out.println("=== CRÉDITS ===\n");
-            System.out.println("Développé par :\n[Célestin HONVAULT]\n[Mathéo Beaudet]\n[Clement Seurin Le Goffic]\n[Mateis Bourlet]\n");
-
-            System.out.println("Projet éducatif.");
-            System.out.println("================");
-        }
-
-        private static void RetourMenu() {
-            System.out.println("\nAppuyez sur une touche pour retourner au menu...");
-            try {
-                System.in.read();
-            } catch (IOException e) {
-                System.out.println("Erreur lors de la lecture de l'entrée.");
-            }
-        }
-
-        private static Clip chargerSon(String cheminFichier) {
-            try {
-                File fichierAudio = new File(cheminFichier);
-                if (fichierAudio.exists()) {
-                    AudioInputStream audioStream = AudioSystem.getAudioInputStream(fichierAudio);
-                    Clip clip = AudioSystem.getClip();
-                    clip.open(audioStream);
-                    return clip;
-                } else {
-                    System.out.println("Le fichier audio " + cheminFichier + " n'existe pas.");
-                }
-            } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-                System.out.println("Erreur lors du chargement du son : " + e.getMessage());
-            }
-            return null;
-        }
-
-        private static void reglerVolume(Clip clip, float volume) {
-            if (clip != null) {
-                try {
-                    FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-
-                    // Convertir le volume en décibels
-                    float min = gainControl.getMinimum(); // Volume minimum en dB
-                    float max = gainControl.getMaximum(); // Volume maximum en dB
-                    float range = max - min;
-
-                    // Calcul du volume en dB
-                    float dB = min + (range * volume); // volume entre 0.0 (silence) et 1.0 (max)
-                    gainControl.setValue(dB);
-                } catch (IllegalArgumentException e) {
-                    System.out.println("Le contrôle du volume n'est pas pris en charge sur ce système.");
-                }
-            }
-        }
-
+        scanner.close();
     }
 
+    // Method to draw the title
+    private static void drawTitle() {
+        final String RESET = "\u001B[0m";
+        final String YELLOW = "\u001B[33m";
 
+        System.out.println(YELLOW + " ______  ______ ______  ______  ______       ______ ______  ______  __  ______ __  ______  __   __    \n" +
+                "/\\  ___\\/\\  == /\\  __ \\/\\  ___\\/\\  ___\\     /\\  == /\\  __ \\/\\  ___\\/\\ \\/\\__  _/\\ \\/\\  __ \\/\\ \"-.\\ \\   \n" +
+                "\\ \\___  \\ \\  _-\\ \\  __ \\ \\ \\___\\ \\  __\\     \\ \\  _-\\ \\ \\/\\ \\ \\___  \\ \\ \\/_/\\ \\\\ \\ \\ \\ \\/\\ \\ \\ \\-.  \\  \n" +
+                " \\/\\_____\\ \\_\\  \\ \\_\\ \\_\\ \\_____\\ \\_____\\    \\ \\_\\  \\ \\_____\\/\\_____\\ \\_\\ \\ \\_\\\\ \\_\\ \\_____\\ \\_\\\\\"\\_\\ \n" +
+                "  \\/_____/\\/_/   \\/_/\\/_/\\/_____/\\/_____/     \\/_/   \\/_____/\\/_____/\\/_/  \\/_/ \\/_/\\/_____/\\/_/ \\/_/ \n" +
+                "                                                                                                      " + RESET);
+    }
+
+    // Method to draw the spaceship
+    private static void drawSpaceship() {
+        final String GREEN = "\u001B[32m";
+        final String RESET = "\u001B[0m";
+
+        System.out.println(GREEN +
+                "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n" +
+                "                                ⠀⠀⠀  ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n" +
+                "                                ⠀⠀⠀⠀⠀⠀⠀ ⠀⠀⠀⠀  ⢀⣠⠴⠶⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n" +
+                "                                ⠀⠀⠀⠀⠀⠀⠀⠀ ⠀ ⣠⠞⠉⠀⠀⠀ ⠀⠾⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀\n" +
+                "                                ⠀⠀⠀⠀⠀ ⣠⡤⠶⢾⠃⠀⠀⠀⠀⠀⠀⠀  ⠈⠛⠈⣷⠶⠤⣄⡀⠀⠀⠀⠀\n" +
+                "                                ⠀⠀⢀⡴⠋⢡⣖⡆⢹⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⢀⡾  ⢰⣲⡌⠙⢦⡀⠀⠀\n" +
+                "                                ⠀⢸⡁⠀⠀⠉⢁⡤⡝⠳⢤⣤⣄⣀⣀⣀⣤⡤⠶⢫⡤⡌⠉⠀⠀⠀   ⡷⠀⠀\n" +
+                "⠀                                ⠈⠳⣄⠀⠀⠈⠛⠁ ⠀⣞⡶⠀⡴⢦⠀⢴⣳⠀⠈⠛⠁⠀⠀   ⣀⡾⠁⠀⠀\n" +
+                "                                ⠀⠀⠀⠀⠈⠙⠶⢤⣄⣀⠀⠀⠀  ⠙⠋⠀⠀⠁  ⠀⣀⣀⣤⠴⠛⠁⠀⠀⠀⠀\n" +
+                "⠀                                ⠀⠀⠀⠀⠀⠀⠀⠀  ⠉⠉⠛⠛⠒⠒⠒⠒⠛⠛⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀\n" +
+                "⠀⠀⠀⠀⠀⠀⠀                ⠀                ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀     \n" +
+                "⠀⠀⠀⠀⠀⠀                ⠀⠀                ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀     \n" + RESET);
+    }
+
+    // Method to display the main menu
+    private static void displayMainMenu() {
+        final String CYAN = "\u001B[36m";
+        final String RESET = "\u001B[0m";
+        final String GREEN = "\u001B[32m";
+        final String YELLOW = "\u001B[33m";
+        final String RED = "\u001B[31m";
+
+        drawSpaceship(); // Draw the spaceship
+        System.out.println("                ========================= MAIN MENU ========================= \n");
+        System.out.println("                                           1." + CYAN + "Play Game" + RESET);
+        System.out.println("                                           2." + GREEN + "Rules" + RESET);
+        System.out.println("                                           3." + YELLOW + "Credits" + RESET);
+        System.out.println("                                           4." + RED + "Quit\n" + RESET);
+        System.out.println("                 ================================================================== ");
+    }
+
+    // Method to simulate playing the game
+    private static void playGame() {
+        System.out.println("You chose to play the game!");
+        System.out.println("Good luck and have fun!");
+    }
+
+    // Method to display game rules
+    private static void showRules() {
+        final String PURPLE = "\u001B[35m";
+        final String RESET = "\u001B[0m";
+
+        System.out.println("                 ========================= GAME RULES ========================== \n");
+        System.out.println("                         1." + PURPLE + "Move your UFO to an adjacent square." + RESET);
+        System.out.println("                         2." + PURPLE + "Drop a meteor on a square of the board." + RESET);
+        System.out.println("                         3." + PURPLE + "Block all opponents to win!\n" + RESET);
+        System.out.println("                 ================================================================== ");
+    }
+
+    // Method to display credits
+    private static void showCredits() {
+        final String BLUE = "\u001B[34m";
+        final String RESET = "\u001B[0m";
+
+        System.out.println("                 =========================== CREDITS ============================ \n");
+        System.out.println("                                       Developed by:");
+        System.out.println("                                       " + BLUE +"[Célestin HONVAULT]");
+        System.out.println("                                       [Mathéo Beaudet]");
+        System.out.println("                                       [Clement Seurin Le Goffic]");
+        System.out.println("                                       [Mateis Bourlet]\n" + RESET);
+        System.out.println("                                       Educational project.");
+        System.out.println("                 ================================================================== ");
+    }
+
+    // Method to wait for user input before returning to the main menu
+    private static void waitForReturnToMenu() {
+        System.out.println("\nPress any key to return to the menu...");
+        try {
+            System.in.read();
+        } catch (IOException e) {
+            System.out.println("Error reading input.");
+        }
+    }
+
+    // Method to load a sound file
+    private static Clip loadSound(String filePath) {
+        try {
+            File audioFile = new File(filePath);
+            if (audioFile.exists()) {
+                AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+                Clip clip = AudioSystem.getClip();
+                clip.open(audioStream);
+                return clip;
+            } else {
+                System.out.println("Audio file " + filePath + " does not exist.");
+            }
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            System.out.println("Error loading sound: " + e.getMessage());
+        }
+        return null;
+    }
+
+    // Method to adjust the volume of the sound
+    private static void setVolume(Clip clip, float volume) {
+        if (clip != null) {
+            try {
+                FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+                float min = gainControl.getMinimum();
+                float max = gainControl.getMaximum();
+                float range = max - min;
+                float dB = min + (range * volume);
+                gainControl.setValue(dB);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Volume control is not supported on this system.");
+            }
+        }
+    }
+}
