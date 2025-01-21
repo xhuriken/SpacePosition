@@ -1,4 +1,5 @@
-public class Players {
+import java.io.Serializable;
+public class Players implements Serializable  {
 
     String name;
     short x;

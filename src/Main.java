@@ -38,8 +38,25 @@ public class Main {
                     clip.open(inputStream);
                     clip.start();
                     System.out.println("bite");
+
+                    // Save map 
                     Save_data save = new Save_data();
                     save.save();
+
+                    //Load map
+                    Load_data load = new Load_data();
+                    load.Load_data();
+
+                    // Add new score in score.bin
+                    ScoreManager manager = new ScoreManager();
+                    //add score to players
+                    manager.updateScore("dede", 10);
+                    manager.updateScore("gege", 20);
+                    // display all scores 
+                    manager.displayAllScores();
+                    // Print score to player dede
+                    System.out.println("dede's score: " + manager.getScore("dede"));
+
                 } catch (Exception e) {
                     System.err.println(e.getMessage());
                 }
