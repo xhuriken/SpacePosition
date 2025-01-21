@@ -1,5 +1,6 @@
 import java.util.Scanner;
 
+
 public class Game {
 
     private Grid grid;
@@ -16,22 +17,20 @@ public class Game {
     /**
      * Function to initialize the players according to the number of players given in 'Game' parameter
      */
-    private void InitializePlayer() {
-        if (nbPlayer == 2) {
-            players[0] = new Players("Joueur 1", (short) 5, (short) 6);
-            players[1] = new Players("Joueur 2", (short) 6, (short) 6);
-        }else if(nbPlayer == 3){
-            players[0] = new Players("Joueur 1", (short) 5, (short) 6);
-            players[1] = new Players("Joueur 2", (short) 6, (short) 6);
-            players[2] = new Players("Joueur 3", (short) 4, (short) 6);
-        }else{
-            players[0] = new Players("Joueur 1", (short) 5, (short) 6);
-            players[1] = new Players("Joueur 2", (short) 6, (short) 6);
-            players[2] = new Players("Joueur 3", (short) 4, (short) 6);
-            players[3] = new Players("Joueur 4", (short) 4, (short) 4);
+    public void InitializePlayer() {
+        // Get the player names dynamically based on the number of players
+        String[] playerNames = MainMenu.PlayerNames(nbPlayer);
+
+        // Initialize players based on the number of players and their names
+        for (int i = 0; i < nbPlayer; i++) {
+            short xPosition = (short) (5 + i);  // Example: Adjust player starting positions
+            short yPosition = 6;  // Same for all players (can be adjusted)
+            players[i] = new Players(playerNames[i], xPosition, yPosition);
         }
+
+        // Place each player on the grid (assuming you have a grid object)
         for (Players player : players) {
-            grid.place(player);
+            grid.place(player); // Assume grid is an object that has a place method
         }
     }
 

@@ -7,11 +7,7 @@
     <list default="true" id="a9c481e0-4b44-4f38-a626-94ba62f4c927" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Grid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Grid.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MainMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MainMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Players.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Players.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/VideoAsciiPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/VideoAsciiPlayer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,7 +39,7 @@
     "Application.MainMenu.executor": "Run",
     "Application.VideoAsciiPlayer.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "game",
+    "git-widget-placeholder": "nameplayer",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/Célestin/Desktop/JavaProject/SpacePosition/src/sounds",
     "node.js.detected.package.eslint": "true",
