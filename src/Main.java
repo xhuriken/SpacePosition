@@ -5,6 +5,7 @@ import javax.sound.sampled.Clip;
 public class Main {
     public static void main(String[] args) {
         playSound("test.wav");
+        Game gameG = new Game((byte) 2);
 
         //STORY 1:
             //Faire un menu pour regrouper plusieurs fonctionalité (chacune dans une fonction quoi)
