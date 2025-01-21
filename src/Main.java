@@ -4,7 +4,7 @@ import javax.sound.sampled.Clip;
 
 public class Main {
     public static void main(String[] args) {
-        playSound("test.wav");
+
         Game gameG = new Game((byte) 2);
 
         //STORY 1:
@@ -25,24 +25,5 @@ public class Main {
             //canMove seras ensuite appeler dans une fonction Win() pour savoir si c'est gagné quoi fait pas genre ta pas compris c'est ecrit dans le nom zbi
         //STORY 6:
             // Ca commence a être les ajout qui serve a rien donc j'ai la flm allez bisous jvous passe le salam quoi
-    }
-
-    public static synchronized void playSound(final String url) {
-        new Thread(new Runnable() {
-            // The wrapper thread is unnecessary, unless it blocks on the
-            // Clip finishing; see comments.
-            public void run() {
-                try {
-                    Clip clip = AudioSystem.getClip();
-                    AudioInputStream inputStream = AudioSystem.getAudioInputStream(
-                            Main.class.getResourceAsStream("/sounds/" + url));
-                    clip.open(inputStream);
-                    clip.start();
-                    System.out.println("bite");
-                } catch (Exception e) {
-                    System.err.println(e.getMessage());
-                }
-            }
-        }).start();
     }
 }
