@@ -17,4 +17,8 @@ public class Players {
     public short GetY(){
         return y;
     }
+
+    public String GetName(){
+        return name;
+    }
 }
