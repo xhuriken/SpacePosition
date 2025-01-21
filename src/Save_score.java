@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ScoreManager {
+public class Save_score {
 
     private static final String SCORE_FILE = "scores.bin"; // File name for storing scores
     private Map<String, Integer> scores = loadScores(); // Initialize and load scores
@@ -10,6 +10,7 @@ public class ScoreManager {
 
     // Integer is object type, so it can be null, so we use getOrDefault to avoid null pointer exception
     private Map<String, Integer> loadScores() {
+       
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(SCORE_FILE))) {
             // Map<String, Integer> is the type of object we are reading from the file
             return (Map<String, Integer>) in.readObject();

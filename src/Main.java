@@ -48,14 +48,14 @@ public class Main {
                     load.Load_data();
 
                     // Add new score in score.bin
-                    ScoreManager manager = new ScoreManager();
+                    Save_score ScoreAdd = new Save_score();
                     //add score to players
-                    manager.updateScore("dede", 10);
-                    manager.updateScore("gege", 20);
+                    ScoreAdd.updateScore("dede", 10);
+                    ScoreAdd.updateScore("gege", 20);
                     // display all scores 
-                    manager.displayAllScores();
+                    ScoreAdd.displayAllScores();
                     // Print score to player dede
-                    System.out.println("dede's score: " + manager.getScore("dede"));
+                    System.out.println("dede's score: " + ScoreAdd.getScore("dede"));
 
                 } catch (Exception e) {
                     System.err.println(e.getMessage());
