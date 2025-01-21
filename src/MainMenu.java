@@ -109,7 +109,7 @@ public class MainMenu {
         System.out.println("                                           2." + GREEN + "Rules" + RESET);
         System.out.println("                                           3." + YELLOW + "Credits" + RESET);
         System.out.println("                                           4." + RED + "Quit\n" + RESET);
-        System.out.println("                 ================================================================== ");
+        System.out.println("                 ============================================================== ");
     }
 
     // Method to simulate playing the game
@@ -117,7 +117,7 @@ public class MainMenu {
         Scanner sc = new Scanner(System.in);
 
         // Ask the number of players
-        System.out.println("How many players? (2 to 4)");
+        System.out.printf("                 How many players? (2 to 4):");
         int nbPlayers = sc.nextInt();
 
         // Initialize the game
@@ -199,6 +199,35 @@ public class MainMenu {
             System.out.println("Error reading input.");
         }
     }
+
+    public static String[] PlayerNames(int numberOfPlayers) {
+        Scanner sc = new Scanner(System.in);
+        String[] playerNames = new String[numberOfPlayers];
+
+        for (int i = 0; i < numberOfPlayers; i++) {
+            System.out.printf("                 Enter the name for player %d: ", i + 1);
+            String name = sc.nextLine().trim(); // Read and trim whitespace
+
+            // Validate the name length
+            while (name.length() < 3 || name.length() > 10) {
+                if (name.isEmpty()) {
+                    System.out.println("                 Name cannot be empty.");
+                } else if (name.length() < 3) {
+                    System.out.println("                 Name is too short. It must be at least 3 characters.");
+                } else if (name.length() > 10) {
+                    System.out.println("                 Name is too long. It must be no more than 10 characters.");
+                }
+                System.out.printf("                 Enter the name for player %d: ", i + 1);
+                name = sc.nextLine().trim();
+            }
+            // Store the valid name
+            playerNames[i] = name;
+        }
+
+        return playerNames;
+    }
+
+
 
     // Method to load a sound file
     private static Clip loadSound(String filePath) {
