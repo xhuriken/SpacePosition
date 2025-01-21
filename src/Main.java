@@ -38,8 +38,8 @@ public class Main {
                     clip.open(inputStream);
                     clip.start();
                     System.out.println("bite");
-                    Save_data save_data = new Save_data();
-                    save_data.initdata();
+                    Save_data save = new Save_data();
+                    save.save();
                 } catch (Exception e) {
                     System.err.println(e.getMessage());
                 }
