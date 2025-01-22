@@ -4,26 +4,17 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 
 public class Save_data {
+     
+ 
+
     private Players[] players;
     private char[][] grid;
 
-    public Save_data() {
-        // Grid fictif
-        grid = new char[10][11];
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[i].length; j++) {
-                grid[i][j] = '.'; 
-            }
-        }
-        grid[0][0] = 'X';
-        grid[9][10] = 'X';
+    public Save_data(Players[] players, char[][] grid) {
+        this.players = players;
 
-        // Players fictifs
-        players = new Players[2];
-        players[0] = new Players("didi", (short) 5, (short) 6);
-        players[1] = new Players("dede", (short) 6, (short) 6);
+        this.grid = grid ;
     }
-
     // Save data to a file Bin
     public void save() {
         String cheminFichier = UniqueFileName("joueurs", "bin"); // File name unique generator

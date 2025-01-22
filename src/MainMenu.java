@@ -1,7 +1,7 @@
-import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
+import javax.sound.sampled.*;
 
 public class MainMenu {
 
@@ -21,15 +21,14 @@ public class MainMenu {
             // Display the main menu
             drawTitle();
             displayMainMenu();
-
             // Get user's choice
-            System.out.print("                 Enter your choice: ");
-            String choice = scanner.nextLine();
-
+            System.out.print("Enter your choice: ");
+            if (scanner.hasNextLine()){
+                String choice = scanner.nextLine();
             // Handle the user's choice
             switch (choice) {
                 case "1":
-                    playGame();
+                    playGame(false);
                     waitForReturnToMenu();
                     break;
                 case "2":
@@ -40,7 +39,10 @@ public class MainMenu {
                     showCredits();
                     waitForReturnToMenu();
                     break;
-                case "4":
+                case"4":
+                    showLoad();
+                    break;
+                case "5":
                     quit = true;
                     System.out.println("Thanks for playing. See you next time!");
                     break;
@@ -48,10 +50,11 @@ public class MainMenu {
                     System.out.println("Invalid choice. Please try again.");
                     break;
             }
-
+        }
             // Add a blank line for readability
             System.out.println();
-        }
+    
+    }
 
         // Stop and close background music
         if (ambiance != null) {
@@ -108,24 +111,56 @@ public class MainMenu {
         System.out.println("                                           1." + CYAN + "Play Game" + RESET);
         System.out.println("                                           2." + GREEN + "Rules" + RESET);
         System.out.println("                                           3." + YELLOW + "Credits" + RESET);
-        System.out.println("                                           4." + RED + "Quit\n" + RESET);
+        System.out.println("                                           4." + YELLOW + "Load" + RESET);
+        System.out.println("                                           5." + RED + "Quit\n" + RESET);
         System.out.println("                 ============================================================== ");
     }
 
     // Method to simulate playing the game
-    private static void playGame() {
+    private static void playGame(boolean isGameLoaded) {
+
+        if (isGameLoaded) {
+            System.out.println("Game loaded successfully.");
+            boolean gameRunning = true;
+            int currentPlayerIndex = 0;
+            int nbPlayers = 2;
+            Game game = new Game((byte) nbPlayers,isGameLoaded);
+            while (gameRunning) {
+                // Display the grid
+                game.getGrid().displayGrid();
+                // Get the current player
+                Players currentPlayer = game.getPlayers()[currentPlayerIndex];
+                System.out.println(currentPlayer.getX() + " " + currentPlayer.getY());
+                // Move the player
+    
+                currentPlayer.move(currentPlayer.getX(), currentPlayer.getY(), game.getGrid().grid, currentPlayer, currentPlayer.getName(), game.getPlayers());
+                game.getGrid().displayGrid();
+                // Destroy a square
+                game.getGrid().destroy();
+    
+                // Check if the game is over
+                //(we need to create isGameOver)
+    //            if (isGameOver(game)) {
+    //                gameRunning = false;
+    //                System.out.println("\nGame Over! " + currentPlayer.getName() + " wins!");
+    //            } else {
+    //                // Move to the next player
+    //                currentPlayerIndex = (currentPlayerIndex + 1) % nbPlayers;
+    //            }
+                //Skip to next player
+                currentPlayerIndex = (currentPlayerIndex + 1) % nbPlayers;
+            }
+        } 
+        else {
+            System.out.println("Starting a new game...");
         Scanner sc = new Scanner(System.in);
-
         // Ask the number of players
-        System.out.printf("                 How many players? (2 to 4):");
+        System.out.printf("How many players? (2 to 4):");
         int nbPlayers = sc.nextInt();
-
         // Initialize the game
-        Game game = new Game((byte) nbPlayers);
-
+        Game game = new Game((byte) nbPlayers,isGameLoaded);
         boolean gameRunning = true;
         int currentPlayerIndex = 0;
-
         while (gameRunning) {
             // Display the grid
             game.getGrid().displayGrid();
@@ -137,9 +172,7 @@ public class MainMenu {
             System.out.println(currentPlayer.getX() + " " + currentPlayer.getY());
             // Move the player
 
-
-
-            currentPlayer.move(currentPlayer.getX(), currentPlayer.getY(), game.getGrid().grid, currentPlayer);
+            currentPlayer.move(currentPlayer.getX(), currentPlayer.getY(), game.getGrid().grid, currentPlayer, currentPlayer.getName(), game.getPlayers());
 
             game.getGrid().displayGrid();
 
@@ -155,11 +188,10 @@ public class MainMenu {
 //                // Move to the next player
 //                currentPlayerIndex = (currentPlayerIndex + 1) % nbPlayers;
 //            }
-
             //Skip to next player
             currentPlayerIndex = (currentPlayerIndex + 1) % nbPlayers;
-
         }
+    }
     }
 
     // Method to display game rules
@@ -190,6 +222,54 @@ public class MainMenu {
         System.out.println("                 ================================================================== ");
     }
 
+    private static void showLoad() {
+        final String BLUE = "\u001B[34m";
+        final String RESET = "\u001B[0m";
+
+        System.out.println("                 =========================== LOAD ============================ \n");
+        int compteur = 1;
+        File fichier;
+        String color = null; // Declare color variable
+        fichier = new File("joueurs" + "_" + compteur + "." + "bin" );
+        while (true) {
+            // File name
+            fichier = new File("joueurs_" + compteur + ".bin");
+                if (compteur % 2 == 0){
+                    color =  "\u001B[34m"; 
+                }
+                else{
+                    color = "\u001B[33m"; 
+                }
+            if (fichier.exists()) { // Check if the file exists
+                System.out.println("" + color + "["+compteur+" : joueurs"+"_" + compteur + ".bin]"+RESET);
+            } else {
+                break; // Stop the loop if the file does not exist
+            }
+            compteur++; // Increment the counter
+        }
+        System.out.println(""+color+ "["+compteur+" : quit]"+RESET);
+        System.out.println("                 ================================================================== ");
+        Scanner scannerChoice = new Scanner(System.in);
+            if (scannerChoice.hasNextLine()){
+            String choice = scannerChoice.nextLine();
+            System.out.println("You entered: " + choice);
+        try {
+            if (choice.equals("quit")) {
+                MainMenu.displayMainMenu();
+            } else if (Integer.parseInt(choice) < compteur) {
+                Load_data.Load_data(choice);
+                playGame(true);
+            } else {
+                System.out.println("Invalid choice. Please try again.");
+            }
+        } catch (AssertionError e) {
+            System.out.println("Invalid choice. Please try again.");
+        }
+
+       
+    }
+    
+    }
     // Method to wait for user input before returning to the main menu
     private static void waitForReturnToMenu() {
         System.out.println("\nPress any key to return to the menu...");
@@ -205,9 +285,8 @@ public class MainMenu {
         String[] playerNames = new String[numberOfPlayers];
 
         for (int i = 0; i < numberOfPlayers; i++) {
-            System.out.printf("                 Enter the name for player %d: ", i + 1);
+            System.out.printf("Enter the name for player %d: ", i + 1);
             String name = sc.nextLine().trim(); // Read and trim whitespace
-
             // Validate the name length
             while (name.length() < 3 || name.length() > 10) {
                 if (name.isEmpty()) {
@@ -226,9 +305,6 @@ public class MainMenu {
 
         return playerNames;
     }
-
-
-
     // Method to load a sound file
     private static Clip loadSound(String filePath) {
         try {

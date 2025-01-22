@@ -41,7 +41,7 @@ public class Main {
                             Main.class.getResourceAsStream("/sounds/" + url));
                     clip.open(inputStream);
                     clip.start();
-                    System.out.println("bite");
+
                 } catch (Exception e) {
                     System.err.println(e.getMessage());
                 }

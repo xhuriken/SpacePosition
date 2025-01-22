@@ -9,6 +9,9 @@ public class Grid {
         grid = new char[10][11];
         initializeGrid();
     }
+    public Grid(char[][] gridData) {
+        this.grid = gridData;
+    }
 
     //Cette fonction est peu être pas si utile que ça les frr
     private void initializeGrid() {

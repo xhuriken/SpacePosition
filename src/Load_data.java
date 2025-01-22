@@ -1,40 +1,48 @@
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 
 public class Load_data {
+    private static Players[] players = null; // Init players null
+    private static char[][] grid = null; // Init grid null
 
-    public static void Load_data() {
+    public static void Load_data(String choise) {
+        players = null; // Reset players 
 
-        String file = "joueurs_4.bin";  // Path to the binary file
+        String file = "joueurs_" + choise + ".bin"; // File name to load
 
-        Players[] players = null; // Init players null
-        char[][] grid = null; // Init grid null
+        File fichier = new File(file);
+        if (!fichier.exists()) {
+            System.out.println("Erreur : le fichier " + file + " n'existe pas.");
+            return;
+        }
 
         try (FileInputStream fileIn = new FileInputStream(file);
              ObjectInputStream dataIn = new ObjectInputStream(fileIn)) {
 
             // Deserialize players and grid from the file
             players = (Players[]) dataIn.readObject();
-            grid = (char[][]) dataIn.readObject();
+            grid = (char[][])dataIn.readObject();
+            
 
-            // Print players' data
-            System.out.println("Les joueurs chargés du fichier :");
-            for (Players player : players) {
-                System.out.println(player.getName() + ", X: " + player.getX() + ", Y: " + player.getY());
-            }
-
-            // Print grid data
-            System.out.println("La grille chargée du fichier :");
-            for (char[] row : grid) {
-                for (char cell : row) {
-                    System.out.print(cell);
-                }
-                System.out.println();
-            }
-
-        } catch (IOException | ClassNotFoundException e) {
-            System.err.println("Erreur veuillez recommencer ! " + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("File not find" + file);
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            System.out.println("");
+            e.printStackTrace();
         }
+    }
+
+    public static Players[] Getplayersload() {
+        if (players == null) {
+            System.out.println("Aucun joueur n'a été chargé.");
+        }
+        return players;
+    }
+
+    public static char[][] Getgridload() {
+        if (grid == null) {
+            System.out.println("Aucune grille n'a été chargée.");
+        }
+        return grid;
     }
 }

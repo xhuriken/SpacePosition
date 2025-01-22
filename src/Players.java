@@ -1,8 +1,7 @@
-import java.util.Scanner;
 import java.io.Serializable;
+import java.util.Scanner;
 
 public class Players implements Serializable {
-
     String name;
     short x;
     short y;
@@ -24,6 +23,7 @@ public class Players implements Serializable {
     public String getName() {
         return name;
     }
+
 
 //    /**
 //     * Function for move players.
@@ -85,12 +85,12 @@ public class Players implements Serializable {
 //        }
 //    }
 
-    public void move(short x, short y, char[][] grid, Players currentPlayer) {
+    public void move(short x, short y, char[][] grid, Players currentPlayer,String name, Players[] players) {
         Scanner sc = new Scanner(System.in);
         boolean validMove = false;
 
         while (!validMove) {
-            System.out.println("Veuillez entrer 'z' ou 'q' ou 's' ou 'd' :");
+            System.out.println("Please enter 'z', 'q', 's', or 'd' to move\n'quit' to quit\n'qs' to save and quit");
             String input = sc.nextLine().toLowerCase();
 
             short newX = currentPlayer.x;
@@ -109,6 +109,12 @@ public class Players implements Serializable {
                 case "d":
                     newY += 1;
                     break; // Move right
+                case "qs":
+                    Save_data save = new Save_data(players, grid );
+                    save.save();
+                    MainMenu.SetupMenu();
+                case "quit":
+                    MainMenu.SetupMenu();
                 default:
                     System.out.println("Veuillez entrer une lettre valide");
                     continue;
