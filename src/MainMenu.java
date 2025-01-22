@@ -1,7 +1,7 @@
-import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
+import javax.sound.sampled.*;
 
 public class MainMenu {
 
@@ -41,6 +41,9 @@ public class MainMenu {
                     waitForReturnToMenu();
                     break;
                 case "4":
+                    showScore();
+                    waitForReturnToMenu();
+                case "5":
                     quit = true;
                     System.out.println("Thanks for playing. See you next time!");
                     break;
@@ -108,8 +111,9 @@ public class MainMenu {
         System.out.println("                                           1." + CYAN + "Play Game" + RESET);
         System.out.println("                                           2." + GREEN + "Rules" + RESET);
         System.out.println("                                           3." + YELLOW + "Credits" + RESET);
-        System.out.println("                                           4." + RED + "Quit\n" + RESET);
-        System.out.println("                 ============================================================== ");
+        System.out.println("                                           4."+ CYAN + "Scores" + RESET);
+        System.out.println("                                           5." + RED + "Quit\n" + RESET);
+        System.out.println("                 ============================================================= ");
     }
 
     // Method to simulate playing the game
@@ -188,6 +192,19 @@ public class MainMenu {
         System.out.println("                                       [Steve Jobs]\n" + RESET);
         System.out.println("                                       Educational project.");
         System.out.println("                 ================================================================== ");
+    }
+
+    private static void showScore(){
+
+        final String BLUE = "\u001B[34m";
+        final String RESET = "\u001B[0m";
+
+        //Display data [player][Scores]
+        System.out.println("                 =========================== SCORES ============================ \n");
+        // System.out.print();
+        System.out.println("                 ================================================================== ");
+
+        
     }
 
     // Method to wait for user input before returning to the main menu
