@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="SpacePosition:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/SpacePosition_jar</output-path>
+    <root id="archive" name="SpacePosition.jar">
+      <element id="module-output" name="SpacePosition" />
+    </root>
+  </artifact>
+</component>

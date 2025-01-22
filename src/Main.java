@@ -5,10 +5,7 @@ import javax.sound.sampled.Clip;
 public class Main {
     public static void main(String[] args) {
 
-        //Game gameG = new Game((byte) 2);
         MainMenu.SetupMenu();
-
-
 
         //STORY 1:
             //Faire un menu pour regrouper plusieurs fonctionalité (chacune dans une fonction quoi)
@@ -29,7 +26,10 @@ public class Main {
         //STORY 6:
             // Ca commence a être les ajout qui serve a rien donc j'ai la flm allez bisous jvous passe le salam quoi
     }
-
+    public static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
     public static synchronized void playSound(final String url) {
         new Thread(new Runnable() {
             // The wrapper thread is unnecessary, unless it blocks on the
@@ -41,7 +41,6 @@ public class Main {
                             Main.class.getResourceAsStream("/sounds/" + url));
                     clip.open(inputStream);
                     clip.start();
-
                 } catch (Exception e) {
                     System.err.println(e.getMessage());
                 }

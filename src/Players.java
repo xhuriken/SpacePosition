@@ -1,96 +1,64 @@
-import java.io.Serializable;
 import java.util.Scanner;
+import java.io.Serializable;
 
 public class Players implements Serializable {
+
     String name;
     short x;
     short y;
+    String color;
 
-    Players(String name, short x, short y) {
+    Players(String name, short x, short y,String color) {
         this.name = name;
         this.x = x;
         this.y = y;
+        this.color = color;
     }
 
+    /**
+     * Function for get the X pos of an player
+     * @return short
+     */
     public short getX() {
         return x;
     }
 
+    /**
+     * Function for get the Y pos of an player
+     * @return short
+     */
     public short getY() {
         return y;
     }
-
+    /**
+     * Function for get the player's name
+     * @return short
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Function for get the player's color
+     * @return short
+     */
+    public String getColor() {
+        return color;
+    }
 
-//    /**
-//     * Function for move players.
-//     * @param y
-//     * @param x
-//     */
-//    public void move(short x , short y, char[][] grid, Players currentPlayer){
-//        String input;
-//        boolean Choice = true;
-//        //Request the player to enter a letter
-//        //As long as Choice is true, we continue (for input misstaks)
-//        while (Choice == true) {
-//            Scanner sc = new Scanner(System.in);
-//            System.out.println("Veuillez entrer 'z' ou 'q' ou 's' ou 'd' :");
-//            input = sc.nextLine().toLowerCase();
-//            //check if the input is valid
-//            if (input.equals("z") || input.equals("q") || input.equals("s") || input.equals("d")) {
-//
-//                if (input.equals("z")) {
-//                    if (grid[x][y + (byte) 1] == '.') {
-//                        currentPlayer.y += 1;
-//                        Choice = false;
-//                    }
-//                    else {
-//                        System.out.println("Vous ne pouvez pas aller ici");
-//                    }
-//                } else if (input.equals("q")) {
-//                    if (grid[x - 1][y] == '.') {
-//                        currentPlayer.x -= 1;
-//                        Choice = false;
-//
-//                    }
-//                    else {
-//                        System.out.println("Vous ne pouvez pas aller ici");
-//                    }
-//                } else if (input.equals("s")) {
-//                    if (grid[x][y - 1] == '.') {
-//                        currentPlayer.y -= 1;
-//                        Choice = false;
-//
-//                    }
-//                    else {
-//                        System.out.println("Vous ne pouvez pas aller ici");
-//                    }
-//                } else if (input.equals("d")) {
-//                    if (grid[x + 1][y] == '.') {
-//                        currentPlayer.x += 1;
-//                        Choice = false;
-//
-//                    }
-//                    else {
-//                        System.out.println("Vous ne pouvez pas aller ici");
-//                    }
-//                }
-//
-//            } else {
-//                System.out.println("Veuillez entrer une lettre valide");
-//            }
-//        }
-//    }
-
-    public void move(short x, short y, char[][] grid, Players currentPlayer,String name, Players[] players) {
+    /**
+     * Function for move player
+     * @param x
+     * @param y
+     * @param grid
+     * @param currentPlayer
+     */
+    public void move(short x, short y, char[][] grid, Players currentPlayer, String name, Players[] players) {
         Scanner sc = new Scanner(System.in);
         boolean validMove = false;
 
         while (!validMove) {
-            System.out.println("Please enter 'z', 'q', 's', or 'd' to move\n'quit' to quit\n'qs' to save and quit");
+            System.out.print("                 Veuillez entrer 'z' ou 'q' ou 's' ou 'd' :");
             String input = sc.nextLine().toLowerCase();
 
             short newX = currentPlayer.x;
@@ -110,13 +78,13 @@ public class Players implements Serializable {
                     newY += 1;
                     break; // Move right
                 case "qs":
-                    Save_data save = new Save_data(players, grid );
+                    Save_data save = new Save_data(players, grid);
                     save.save();
                     MainMenu.SetupMenu();
                 case "quit":
                     MainMenu.SetupMenu();
                 default:
-                    System.out.println("Veuillez entrer une lettre valide");
+                    System.out.println("                 Veuillez entrer une lettre valide");
                     continue;
             }
             //Check if the new position is valid
@@ -129,9 +97,9 @@ public class Players implements Serializable {
                 // Mark the new position in the grid
                 grid[newX][newY] = 'J';
                 validMove = true;
-                System.out.println("Move successful!");
+                System.out.println("                 Move successful!");
             } else {
-                System.out.println("Invalid move. Try again.");
+                System.out.println("                 Invalid move. Try again.");
             }
         }
     }

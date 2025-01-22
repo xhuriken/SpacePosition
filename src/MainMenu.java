@@ -1,10 +1,15 @@
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 import java.util.Scanner;
 import javax.sound.sampled.*;
 
 public class MainMenu {
 
+
+    /**
+     * Function for start the menu
+     */
     public static void SetupMenu(){
         // Load and play background music
         Clip ambiance = loadSound("Theme.wav");
@@ -25,36 +30,38 @@ public class MainMenu {
             System.out.print("Enter your choice: ");
             if (scanner.hasNextLine()){
                 String choice = scanner.nextLine();
-            // Handle the user's choice
-            switch (choice) {
-                case "1":
-                    playGame(false);
-                    waitForReturnToMenu();
-                    break;
-                case "2":
-                    showRules();
-                    waitForReturnToMenu();
-                    break;
-                case "3":
-                    showCredits();
-                    waitForReturnToMenu();
-                    break;
-                case"4":
-                    showLoad();
-                    break;
-                case "5":
-                    quit = true;
-                    System.out.println("Thanks for playing. See you next time!");
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
-                    break;
+                // Handle the user's choice
+                switch (choice) {
+                    case "1":
+                        playGame(false);
+                        waitForReturnToMenu();
+                        break;
+                    case "2":
+                        showRules();
+                        waitForReturnToMenu();
+                        break;
+                    case "3":
+                        showCredits();
+                        waitForReturnToMenu();
+                        break;
+                    case"4":
+                        showLoad();
+                        break;
+                    case "5":
+                        showScore();
+                        waitForReturnToMenu();
+                    case "6":
+                        quit = true;
+                        System.out.println("Thanks for playing. See you next time!");
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
+                        break;
+                }
             }
-        }
             // Add a blank line for readability
             System.out.println();
-    
-    }
+        }
 
         // Stop and close background music
         if (ambiance != null) {
@@ -65,7 +72,9 @@ public class MainMenu {
         scanner.close();
     }
 
-    // Method to draw the title
+    /**
+     * Function for show the game Title in cli
+     */
     private static void drawTitle() {
         final String RESET = "\u001B[0m";
         final String YELLOW = "\u001B[33m";
@@ -78,7 +87,9 @@ public class MainMenu {
                 "                                                                                                      " + RESET);
     }
 
-    // Method to draw the spaceship
+    /**
+     * Function for show the logo in cli
+     */
     private static void drawSpaceship() {
         final String GREEN = "\u001B[32m";
         final String RESET = "\u001B[0m";
@@ -98,7 +109,9 @@ public class MainMenu {
                 "⠀⠀⠀⠀⠀⠀                ⠀⠀                ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀     \n" + RESET);
     }
 
-    // Method to display the main menu
+    /**
+     * function for show the mainmenu option in cli
+     */
     private static void displayMainMenu() {
         final String CYAN = "\u001B[36m";
         final String RESET = "\u001B[0m";
@@ -112,93 +125,127 @@ public class MainMenu {
         System.out.println("                                           2." + GREEN + "Rules" + RESET);
         System.out.println("                                           3." + YELLOW + "Credits" + RESET);
         System.out.println("                                           4." + YELLOW + "Load" + RESET);
-        System.out.println("                                           5." + RED + "Quit\n" + RESET);
-        System.out.println("                 ============================================================== ");
+        System.out.println("                                           5." + CYAN + "Scores" + RESET);
+        System.out.println("                                           6." + RED + "Quit\n" + RESET);
+        System.out.println("                 ============================================================= ");
     }
 
-    // Method to simulate playing the game
+    /**
+     * Function for start the game
+     */
     private static void playGame(boolean isGameLoaded) {
 
         if (isGameLoaded) {
+
             System.out.println("Game loaded successfully.");
             boolean gameRunning = true;
             int currentPlayerIndex = 0;
             int nbPlayers = 2;
-            Game game = new Game((byte) nbPlayers,isGameLoaded);
+            Game game = new Game((byte) nbPlayers, isGameLoaded);
+
             while (gameRunning) {
                 // Display the grid
-                game.getGrid().displayGrid();
+                Main.clearScreen();
                 // Get the current player
                 Players currentPlayer = game.getPlayers()[currentPlayerIndex];
-                System.out.println(currentPlayer.getX() + " " + currentPlayer.getY());
+                System.out.println("\n                 " + currentPlayer.getName() + "'s turn!");
+                //System.out.println(currentPlayer.getX() + " " + currentPlayer.getY());
+
                 // Move the player
-    
                 currentPlayer.move(currentPlayer.getX(), currentPlayer.getY(), game.getGrid().grid, currentPlayer, currentPlayer.getName(), game.getPlayers());
-                game.getGrid().displayGrid();
+                game.getGrid().displayGrid(game.getPlayers());
                 // Destroy a square
                 game.getGrid().destroy();
-    
-                // Check if the game is over
-                //(we need to create isGameOver)
-    //            if (isGameOver(game)) {
-    //                gameRunning = false;
-    //                System.out.println("\nGame Over! " + currentPlayer.getName() + " wins!");
-    //            } else {
-    //                // Move to the next player
-    //                currentPlayerIndex = (currentPlayerIndex + 1) % nbPlayers;
-    //            }
+                game.getGrid().displayGrid(game.getPlayers());
+
+                // Check if the current player is stuck
+                if (game.endgame(currentPlayer, game.getGrid().grid)) {
+                    System.out.println(                 currentPlayer.getName() + " is stuck and out of the game!");
+                    game.removePlayer(currentPlayer); // Remove the player from the game
+                    nbPlayers--;
+
+                    // Check if only one player remains
+                    if (nbPlayers == 1) {
+                        gameRunning = false;
+                        System.out.println("\n                 Game Over! The winner is " + game.getPlayers()[0].getName() + "!");
+                        break;
+                    }
+                }
+
+                currentPlayerIndex = (currentPlayerIndex + 1) % nbPlayers;
+            }
+        } else {
+            System.out.println("                 Starting a new game...");
+            Scanner sc = new Scanner(System.in);
+            boolean choice = true;
+            int nbPlayers = 0;
+            while (choice) {
+                try {
+                    // Ask the number of players
+                    System.out.print("                 How many players? (2 to 4): ");
+                    // Read user input
+                    nbPlayers = sc.nextInt();
+                    // Check if the number is within the valid range
+                    if (nbPlayers >= 2 && nbPlayers <= 4) {
+                        choice = false; // Valid input, exit the loop
+                    } else {
+                        System.out.println("                 Please enter a number between 2 and 4.");
+                    }
+                } catch (Exception e) {
+                    System.out.println("                 Invalid input. Please enter a number between 2 and 4.");
+                    sc.nextLine(); // Clear the invalid input
+                }
+            }
+
+            // Initialize the game
+            Game game = new Game((byte) nbPlayers, isGameLoaded);
+            boolean gameRunning = true;
+            Random rand = new Random();
+            int currentPlayerIndex = 0;
+            currentPlayerIndex = (currentPlayerIndex + rand.nextInt(nbPlayers));
+            //System.out.println(currentPlayerIndex);
+            game.getGrid().displayGrid(game.getPlayers());
+
+            while (gameRunning) {
+                // Display the grid
+                Main.clearScreen();
+                // Get the current player
+                Players currentPlayer = game.getPlayers()[currentPlayerIndex];
+                System.out.println("\n                 " + currentPlayer.getName() + "'s turn!");
+                //System.out.println(currentPlayer.getX() + " " + currentPlayer.getY());
+
+                // Move the player
+                currentPlayer.move(currentPlayer.getX(), currentPlayer.getY(), game.getGrid().grid, currentPlayer, currentPlayer.getName(), game.getPlayers());
+                game.getGrid().displayGrid(game.getPlayers());
+
+                // Destroy a square
+                game.getGrid().destroy();
+                game.getGrid().displayGrid(game.getPlayers());
+
+                // Check if the current player is stuck
+                if (game.endgame(currentPlayer, game.getGrid().grid)) {
+                    System.out.println(                 currentPlayer.getName() + " is stuck and out of the game!");
+                    game.removePlayer(currentPlayer); // Remove the player from the game
+                    nbPlayers--;
+                    // Check if only one player remains
+                    if (nbPlayers == 1) {
+                        gameRunning = false;
+                        System.out.println("\n                 Game Over! The winner is " + game.getPlayers()[0].getName() + "!");
+                        break;
+                    }
+                }
                 //Skip to next player
                 currentPlayerIndex = (currentPlayerIndex + 1) % nbPlayers;
             }
-        } 
-        else {
-            System.out.println("Starting a new game...");
-        Scanner sc = new Scanner(System.in);
-        // Ask the number of players
-        System.out.printf("How many players? (2 to 4):");
-        int nbPlayers = sc.nextInt();
-        // Initialize the game
-        Game game = new Game((byte) nbPlayers,isGameLoaded);
-        boolean gameRunning = true;
-        int currentPlayerIndex = 0;
-        while (gameRunning) {
-            // Display the grid
-            game.getGrid().displayGrid();
-
-            // Get the current player
-            Players currentPlayer = game.getPlayers()[currentPlayerIndex];
-            System.out.println("\n" + currentPlayer.getName() + "'s turn!");
-
-            System.out.println(currentPlayer.getX() + " " + currentPlayer.getY());
-            // Move the player
-
-            currentPlayer.move(currentPlayer.getX(), currentPlayer.getY(), game.getGrid().grid, currentPlayer, currentPlayer.getName(), game.getPlayers());
-
-            game.getGrid().displayGrid();
-
-            // Destroy a square
-            game.getGrid().destroy();
-
-            // Check if the game is over
-            //(we need to create isGameOver)
-//            if (isGameOver(game)) {
-//                gameRunning = false;
-//                System.out.println("\nGame Over! " + currentPlayer.getName() + " wins!");
-//            } else {
-//                // Move to the next player
-//                currentPlayerIndex = (currentPlayerIndex + 1) % nbPlayers;
-//            }
-            //Skip to next player
-            currentPlayerIndex = (currentPlayerIndex + 1) % nbPlayers;
         }
     }
-    }
 
-    // Method to display game rules
+    /**
+     * Function for show Rules in cli
+     */
     private static void showRules() {
         final String PURPLE = "\u001B[35m";
         final String RESET = "\u001B[0m";
-
         System.out.println("                 ========================= GAME RULES ========================== \n");
         System.out.println("                         1." + PURPLE + "Move your UFO to an adjacent square." + RESET);
         System.out.println("                         2." + PURPLE + "Drop a meteor on a square of the board." + RESET);
@@ -206,11 +253,12 @@ public class MainMenu {
         System.out.println("                 ================================================================== ");
     }
 
-    // Method to display credits
+    /**
+     * Function for show Credit in cli
+     */
     private static void showCredits() {
         final String BLUE = "\u001B[34m";
         final String RESET = "\u001B[0m";
-
         System.out.println("                 =========================== CREDITS ============================ \n");
         System.out.println("                                       Developed by:");
         System.out.println("                                       " + BLUE +"[Célestin HONVAULT]");
@@ -225,7 +273,6 @@ public class MainMenu {
     private static void showLoad() {
         final String BLUE = "\u001B[34m";
         final String RESET = "\u001B[0m";
-
         System.out.println("                 =========================== LOAD ============================ \n");
         int compteur = 1;
         File fichier;
@@ -235,10 +282,10 @@ public class MainMenu {
             // File name
             fichier = new File("joueurs_" + compteur + ".bin");
                 if (compteur % 2 == 0){
-                    color =  "\u001B[34m"; 
+                    color =  "\u001B[34m";
                 }
                 else{
-                    color = "\u001B[33m"; 
+                    color = "\u001B[33m";
                 }
             if (fichier.exists()) { // Check if the file exists
                 System.out.println("" + color + "["+compteur+" : joueurs"+"_" + compteur + ".bin]"+RESET);
@@ -250,27 +297,36 @@ public class MainMenu {
         System.out.println(""+color+ "["+compteur+" : quit]"+RESET);
         System.out.println("                 ================================================================== ");
         Scanner scannerChoice = new Scanner(System.in);
-            if (scannerChoice.hasNextLine()){
+        if (scannerChoice.hasNextLine()){
             String choice = scannerChoice.nextLine();
             System.out.println("You entered: " + choice);
-        try {
-            if (choice.equals("quit")) {
-                MainMenu.displayMainMenu();
-            } else if (Integer.parseInt(choice) < compteur) {
-                Load_data.Load_data(choice);
-                playGame(true);
-            } else {
+            try {
+                if (choice.equals("quit")) {
+                    MainMenu.displayMainMenu();
+                } else if (Integer.parseInt(choice) < compteur) {
+                    Load_data.Load_data(choice);
+                    playGame(true);
+                } else {
+                    System.out.println("Invalid choice. Please try again.");
+                }
+            } catch (AssertionError e) {
                 System.out.println("Invalid choice. Please try again.");
             }
-        } catch (AssertionError e) {
-            System.out.println("Invalid choice. Please try again.");
         }
+    }
 
-       
+    private static void showScore(){
+        final String BLUE = "\u001B[34m";
+        final String RESET = "\u001B[0m";
+        //Display data [player][Scores]
+        System.out.println("                 =========================== SCORES ============================ \n");
+        // System.out.print();
+        System.out.println("                 ================================================================== ");
     }
-    
-    }
-    // Method to wait for user input before returning to the main menu
+
+    /**
+     * Function for wait input tu return
+     */
     private static void waitForReturnToMenu() {
         System.out.println("\nPress any key to return to the menu...");
         try {
@@ -280,13 +336,19 @@ public class MainMenu {
         }
     }
 
+    /**
+     * Function for ask Players name and use it into game
+     * @param numberOfPlayers
+     * @return String[]
+     */
     public static String[] PlayerNames(int numberOfPlayers) {
         Scanner sc = new Scanner(System.in);
         String[] playerNames = new String[numberOfPlayers];
 
         for (int i = 0; i < numberOfPlayers; i++) {
-            System.out.printf("Enter the name for player %d: ", i + 1);
+            System.out.printf("                 Enter the name for player %d: ", i + 1);
             String name = sc.nextLine().trim(); // Read and trim whitespace
+
             // Validate the name length
             while (name.length() < 3 || name.length() > 10) {
                 if (name.isEmpty()) {
@@ -302,10 +364,15 @@ public class MainMenu {
             // Store the valid name
             playerNames[i] = name;
         }
-
         return playerNames;
     }
-    // Method to load a sound file
+
+
+    /**
+     * Function for load Sound
+     * @param filePath
+     * @return Clip
+     */
     private static Clip loadSound(String filePath) {
         try {
             File audioFile = new File(filePath);
@@ -323,7 +390,11 @@ public class MainMenu {
         return null;
     }
 
-    // Method to adjust the volume of the sound
+    /**
+     * Function for set the volume music
+     * @param clip
+     * @param volume
+     */
     private static void setVolume(Clip clip, float volume) {
         if (clip != null) {
             try {
