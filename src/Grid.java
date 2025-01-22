@@ -37,11 +37,27 @@ public class Grid {
     }
 
     /**
+     * Fonction pour obtenir la taille de la grille (nombre de lignes).
+     * @return nombre de lignes dans la grille.
+     */
+    public int getSize() {
+        return grid.length;
+    }
+
+    /**
      * Function for spawn player in the grid
      * @param player
      */
     public void place(Players player) {
         grid[player.getX()][player.getY()] = 'J';
+    }
+
+    /**
+     * Function for spawn player in the grid
+     * @param bot
+     */
+    public void placeBot(Bot bot) {
+        grid[bot.getX()][bot.getY()] = 'B';
     }
 
     /**
@@ -55,6 +71,12 @@ public class Grid {
             System.out.println();
         }
     }
+
+    public boolean isCellEmpty(int x, int y) {
+        // Vérifiez si la case est vide (par exemple, avec '.' pour les cases libres)
+        return this.grid[x][y] == '.';
+    }
+
 
     /**
      * Function for destroy case
