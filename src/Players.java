@@ -6,11 +6,13 @@ public class Players implements Serializable {
     String name;
     short x;
     short y;
+    String color;
 
-    Players(String name, short x, short y) {
+    Players(String name, short x, short y,String color) {
         this.name = name;
         this.x = x;
         this.y = y;
+        this.color = color;
     }
 
     /**
@@ -34,6 +36,14 @@ public class Players implements Serializable {
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * Function for get the player's color
+     * @return short
+     */
+    public String getColor() {
+        return color;
     }
 
     /**

@@ -1,6 +1,5 @@
 import java.util.Scanner;
 
-
 public class Game {
 
     private Grid grid;
@@ -21,18 +20,22 @@ public class Game {
         // Get the player names dynamically based on the number of players
         String[] playerNames = MainMenu.PlayerNames(nbPlayer);
 
-        // Initialize players based on the number of players and their names
+        // Define colors for each player
+        String[] playerColors = {"\u001B[31m", "\u001B[34m", "\u001B[32m", "\u001B[33m"}; // Red, Blue, Green, Yellow
+
+        // Initialize players based on the number of players, their names, and colors
         for (int i = 0; i < nbPlayer; i++) {
             short xPosition = (short) (5 + i);  // Example: Adjust player starting positions
             short yPosition = 6;  // Same for all players (can be adjusted)
-            players[i] = new Players(playerNames[i], xPosition, yPosition);
+            players[i] = new Players(playerNames[i], xPosition, yPosition, playerColors[i]);
         }
 
-        // Place each player on the grid (assuming you have a grid object)
+        // Place each player on the grid
         for (Players player : players) {
-            grid.place(player); // Assume grid is an object that has a place method
+            grid.place(player);
         }
     }
+
 
     /**
      * Function for get the List of players
@@ -60,12 +63,24 @@ public class Game {
 
         int cordx = currentPlayers.getX();
         int cordy = currentPlayers.getY();
+                //en bas                        en haut,                      a droite                          a gauche
+        return grid[cordx + 1][cordy] != '.' && grid[cordx - 1][cordy] != '.' && grid[cordx][cordy + 1] != '.' && grid[cordx][cordy - 1] != '.';
+    }
 
+    /**
+     * Function for remove player object from the Game object.
+     * @param playerToRemove
+     */
+    public void removePlayer(Players playerToRemove) {
+        Players[] newPlayers = new Players[players.length - 1];
+        int index = 0;
 
-        if (grid[cordx + 1][cordy] != '.' & grid[cordx - 1][cordy] != '.' & grid[cordx][cordy + 1] != '.' & grid[cordx][cordy - 1] != '.') {
-            System.out.println("Vous ne pouvez plus bouger");
-            return true;
+        for (Players player : players) {
+            if (!player.equals(playerToRemove)) {
+                newPlayers[index++] = player;
+            }
         }
-        return false;
+
+        players = newPlayers;
     }
 }

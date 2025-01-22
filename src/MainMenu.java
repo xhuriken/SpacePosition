@@ -142,9 +142,10 @@ public class MainMenu {
         currentPlayerIndex = (currentPlayerIndex + rand.nextInt(nbPlayers));
         System.out.println(currentPlayerIndex);
 
+        game.getGrid().displayGrid(game.getPlayers());
+
         while (gameRunning) {
             // Display the grid
-            game.getGrid().displayGrid();
 
             // Get the current player
             Players currentPlayer = game.getPlayers()[currentPlayerIndex];
@@ -153,24 +154,27 @@ public class MainMenu {
             System.out.println(currentPlayer.getX() + " " + currentPlayer.getY());
             // Move the player
 
-
-
             currentPlayer.move(currentPlayer.getX(), currentPlayer.getY(), game.getGrid().grid, currentPlayer);
 
-            game.getGrid().displayGrid();
+            game.getGrid().displayGrid(game.getPlayers());
 
             // Destroy a square
             game.getGrid().destroy();
+            game.getGrid().displayGrid(game.getPlayers());
 
-            // Check if the game is over
-            //(we need to create isGameOver)
-//            if (isGameOver(game)) {
-//                gameRunning = false;
-//                System.out.println("\nGame Over! " + currentPlayer.getName() + " wins!");
-//            } else {
-//                // Move to the next player
-//                currentPlayerIndex = (currentPlayerIndex + 1) % nbPlayers;
-//            }
+            // Check if the current player is stuck
+            if (game.endgame(currentPlayer, game.getGrid().grid)) {
+                System.out.println(currentPlayer.getName() + " is stuck and out of the game!");
+                game.removePlayer(currentPlayer); // Remove the player from the game
+                nbPlayers--;
+
+                // Check if only one player remains
+                if (nbPlayers == 1) {
+                    gameRunning = false;
+                    System.out.println("\nGame Over! The winner is " + game.getPlayers()[0].getName() + "!");
+                    break;
+                }
+            }
 
             //Skip to next player
             currentPlayerIndex = (currentPlayerIndex + 1) % nbPlayers;

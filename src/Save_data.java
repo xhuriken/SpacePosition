@@ -20,8 +20,8 @@ public class Save_data {
 
         // Players fictifs
         players = new Players[2];
-        players[0] = new Players("didi", (short) 5, (short) 6);
-        players[1] = new Players("dede", (short) 6, (short) 6);
+//        players[0] = new Players("didi", (short) 5, (short) 6);
+//        players[1] = new Players("dede", (short) 6, (short) 6);
     }
 
     // Save data to a file Bin
@@ -31,15 +31,15 @@ public class Save_data {
     }
 
     // Save players and grid to a file
-    public static void SavePlayersAndGrid(Players[] players, char[][] grid, String cheminFichier) {
-        try (FileOutputStream fileOut = new FileOutputStream(cheminFichier);
+    public static void SavePlayersAndGrid(Players[] players, char[][] grid, String filePath) {
+        try (FileOutputStream fileOut = new FileOutputStream(filePath);
              ObjectOutputStream data = new ObjectOutputStream(fileOut)) {
             // Save players
             data.writeObject(players);
             // Save grid
             data.writeObject(grid);
 
-            System.out.println("Données sauvegardées dans le fichier : " + cheminFichier);
+            System.out.println("Données sauvegardées dans le fichier : " + filePath);
         } catch (IOException e) {
             System.err.println("Erreur lors de la sauvegarde : " + e.getMessage());
         }

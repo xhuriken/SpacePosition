@@ -20,9 +20,9 @@ public class Grid {
                 { '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.' },
                 { '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.' },
                 { '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.' },
-                { '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.' },
-                { '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.' },
-                { '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.' },
+                { '.', '.', '.', '.', '.', '.', '.', '#', '#', '.', '.' },
+                { '.', '.', '.', '.', '.', '.', '#', '.', '#', '.', '.' },
+                { '.', '.', '.', '.', '.', '#', '.', '.', '.', '.', '.' },
                 { '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.' },
                 { '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.' },
                 { '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.' },
@@ -47,14 +47,29 @@ public class Grid {
     /**
      * function for display the grid in cli
      */
-    public void displayGrid() {
+    public void displayGrid(Players[] players) {
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
-                System.out.print(grid[i][j] + " ");
+                boolean isPlayerHere = false;
+
+                for (Players player : players) {
+                    if (player.getX() == i && player.getY() == j) {
+                        // Print the player's symbol with their color
+                        System.out.print(player.getColor() + "J" + "\u001B[0m" + " ");
+                        isPlayerHere = true;
+                        break;
+                    }
+                }
+
+                if (!isPlayerHere) {
+                    // Print the default grid cell
+                    System.out.print(grid[i][j] + " ");
+                }
             }
             System.out.println();
         }
     }
+
 
     /**
      * Function for destroy case
