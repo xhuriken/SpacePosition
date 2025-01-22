@@ -26,7 +26,10 @@ public class Main {
         //STORY 6:
             // Ca commence a être les ajout qui serve a rien donc j'ai la flm allez bisous jvous passe le salam quoi
     }
-
+    public static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
     public static synchronized void playSound(final String url) {
         new Thread(new Runnable() {
             // The wrapper thread is unnecessary, unless it blocks on the

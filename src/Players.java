@@ -58,7 +58,7 @@ public class Players implements Serializable {
         boolean validMove = false;
 
         while (!validMove) {
-            System.out.println("Veuillez entrer 'z' ou 'q' ou 's' ou 'd' :");
+            System.out.print("                 Veuillez entrer 'z' ou 'q' ou 's' ou 'd' :");
             String input = sc.nextLine().toLowerCase();
 
             short newX = currentPlayer.x;
@@ -78,7 +78,7 @@ public class Players implements Serializable {
                     newY += 1;
                     break; // Move right
                 default:
-                    System.out.println("Veuillez entrer une lettre valide");
+                    System.out.println("                 Veuillez entrer une lettre valide");
                     continue;
             }
             //Check if the new position is valid
@@ -91,9 +91,9 @@ public class Players implements Serializable {
                 // Mark the new position in the grid
                 grid[newX][newY] = 'J';
                 validMove = true;
-                System.out.println("Move successful!");
+                System.out.println("                 Move successful!");
             } else {
-                System.out.println("Invalid move. Try again.");
+                System.out.println("                 Invalid move. Try again.");
             }
         }
     }

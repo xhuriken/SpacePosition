@@ -129,9 +129,28 @@ public class MainMenu {
     private static void playGame() {
         Scanner sc = new Scanner(System.in);
 
-        // Ask the number of players
-        System.out.printf("                 How many players? (2 to 4):");
-        int nbPlayers = sc.nextInt();
+        boolean choice = true;
+        int nbPlayers = 0;
+        while (choice) {
+            try {
+                // Ask the number of players
+                System.out.print("                 How many players? (2 to 4): ");
+
+                // Read user input
+                nbPlayers = sc.nextInt();
+
+                // Check if the number is within the valid range
+                if (nbPlayers >= 2 && nbPlayers <= 4) {
+                    choice = false; // Valid input, exit the loop
+                } else {
+                    System.out.println("                 Please enter a number between 2 and 4.");
+                }
+            } catch (Exception e) {
+                System.out.println("                 Invalid input. Please enter a number between 2 and 4.");
+                sc.nextLine(); // Clear the invalid input
+            }
+        }
+
 
         // Initialize the game
         Game game = new Game((byte) nbPlayers);
@@ -140,18 +159,18 @@ public class MainMenu {
         Random rand = new Random();
         int currentPlayerIndex = 0;
         currentPlayerIndex = (currentPlayerIndex + rand.nextInt(nbPlayers));
-        System.out.println(currentPlayerIndex);
+        //System.out.println(currentPlayerIndex);
 
         game.getGrid().displayGrid(game.getPlayers());
 
         while (gameRunning) {
             // Display the grid
-
+            Main.clearScreen();
             // Get the current player
             Players currentPlayer = game.getPlayers()[currentPlayerIndex];
-            System.out.println("\n" + currentPlayer.getName() + "'s turn!");
+            System.out.println("\n                 " + currentPlayer.getName() + "'s turn!");
 
-            System.out.println(currentPlayer.getX() + " " + currentPlayer.getY());
+            //System.out.println(currentPlayer.getX() + " " + currentPlayer.getY());
             // Move the player
 
             currentPlayer.move(currentPlayer.getX(), currentPlayer.getY(), game.getGrid().grid, currentPlayer);
@@ -164,14 +183,14 @@ public class MainMenu {
 
             // Check if the current player is stuck
             if (game.endgame(currentPlayer, game.getGrid().grid)) {
-                System.out.println(currentPlayer.getName() + " is stuck and out of the game!");
+                System.out.println(                 currentPlayer.getName() + " is stuck and out of the game!");
                 game.removePlayer(currentPlayer); // Remove the player from the game
                 nbPlayers--;
 
                 // Check if only one player remains
                 if (nbPlayers == 1) {
                     gameRunning = false;
-                    System.out.println("\nGame Over! The winner is " + game.getPlayers()[0].getName() + "!");
+                    System.out.println("\n                 Game Over! The winner is " + game.getPlayers()[0].getName() + "!");
                     break;
                 }
             }

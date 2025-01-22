@@ -20,9 +20,9 @@ public class Grid {
                 { '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.' },
                 { '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.' },
                 { '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.' },
-                { '.', '.', '.', '.', '.', '.', '.', '#', '#', '.', '.' },
-                { '.', '.', '.', '.', '.', '.', '#', '.', '#', '.', '.' },
-                { '.', '.', '.', '.', '.', '#', '.', '.', '.', '.', '.' },
+                { '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.' },
+                { '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.' },
+                { '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.' },
                 { '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.' },
                 { '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.' },
                 { '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.' },
@@ -48,14 +48,39 @@ public class Grid {
      * function for display the grid in cli
      */
     public void displayGrid(Players[] players) {
+        // Define colors for the indices
+        final String RESET = "\u001B[0m";
+        final String CYAN = "\u001B[36m";    // Color for numbers
+        final String MAGENTA = "\u001B[35m"; // Color for letters
+
+        // Define the margin (spaces before each row)
+        final String MARGIN = "                               ";
+//        for (short space=0; space<30; space++){
+//            System.out.print("\n");
+//        }
+        System.out.print(MARGIN);
+        System.out.print("   "); // Space for the first column
+        for (int col = 1; col <= grid[0].length; col++) {
+            System.out.printf(CYAN + "%-3d" + RESET, col); // Print numbers with 3-character width
+        }
+        System.out.println();
+
+        // Print the grid with the left column of letters
         for (int i = 0; i < grid.length; i++) {
+            // Print the row letter with margin
+            System.out.print(MARGIN);
+            char rowLabel = (char) ('a' + i); // 'a', 'b', 'c', ...
+            System.out.printf(MAGENTA + "%-3c" + RESET, rowLabel); // Print letter with 3-character width
+
+            // Print the grid row
             for (int j = 0; j < grid[i].length; j++) {
                 boolean isPlayerHere = false;
 
+                // Check if a player is on this cell
                 for (Players player : players) {
                     if (player.getX() == i && player.getY() == j) {
                         // Print the player's symbol with their color
-                        System.out.print(player.getColor() + "J" + "\u001B[0m" + " ");
+                        System.out.printf(player.getColor() + "J" + RESET + "  ");
                         isPlayerHere = true;
                         break;
                     }
@@ -63,20 +88,13 @@ public class Grid {
 
                 if (!isPlayerHere) {
                     // Print the default grid cell
-                    System.out.print(grid[i][j] + " ");
+                    System.out.printf("%-3c", grid[i][j]);
                 }
             }
-            System.out.println();
+            System.out.println(); // Move to the next row
         }
     }
-
-
-    /**
-     * Function for destroy case
-     */
-
-
-     /**
+    /*
       * Pseudo code de la fonction destroy
       * Il faut demander au joueur de rentrer des coordonnées (ex : a2)
       * Recup les coordonnées dans un string
@@ -84,6 +102,10 @@ public class Grid {
       * quand i = 2, on recupere la valeur de x
       *
       */
+
+    /**
+     * Function for destroy case
+     */
     public void destroy(){
     boolean Choice = true;
         //Request the player to enter a coordinates
@@ -95,7 +117,7 @@ public class Grid {
         //As long as Choice is true, we continue
         while (Choice == true){
             
-            System.out.print("Enter coordinates to destroy boxes like 'a2': ");
+            System.out.print("                 Enter coordinates to destroy boxes like 'a2': ");
             String coords = scanner.next();
 
             //Split the coordinates
@@ -115,34 +137,28 @@ public class Grid {
                         CoordXg = (short) CoordXi ;
                         CoordYg = (short) CoordYi ;
 
-                        System.err.println(CoordXg);
-                        System.err.println(CoordYg);
-
                     }else{
-                        System.err.println("Vos coordonnées ne finissent pas par un chiffre");
+                        System.err.println("                 Vos coordonnées ne finissent pas par un chiffre");
                     }
                 }else{
-                    System.err.println("Vos coordonnées ne commence pas par une lettre");
+                    System.err.println("                 Vos coordonnées ne commence pas par une lettre");
                 }
             }else{
-                System.err.println("Chaine de caractère trop longue");
+                System.err.println("                 Chaine de caractère trop longue");
             }
 
-
-
-            
             //Check whether the coordinates are outside the table 
             if (CoordXg >= 0 && CoordXg < grid.length && CoordYg >= 0 && CoordYg < grid[0].length) {
                 //Check if the box is empty
                 if (grid[CoordXg][CoordYg -1] == '.') {
                     grid[CoordXg][CoordYg -1] = '#'; 
-                    System.out.println("Box destroyed!");
+                    System.out.println("                 Box destroyed!");
                     Choice = false; 
                 } else {
-                    System.out.println("The case is occupied ;) Try again!");
+                    System.out.println("                 The case is occupied ;) Try again!");
                 }
             } else {
-                System.out.println("Coordinates out of bounds :( Try again !");
+                System.out.println("                 Coordinates out of bounds :( Try again !");
             }
         }
     }
