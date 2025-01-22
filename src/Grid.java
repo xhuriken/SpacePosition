@@ -74,27 +74,68 @@ public class Grid {
     /**
      * Function for destroy case
      */
+
+
+     /**
+      * Pseudo code de la fonction destroy
+      * Il faut demander au joueur de rentrer des coordonnées (ex : a2)
+      * Recup les coordonnées dans un string
+      * boucle for pour split le string
+      * quand i = 2, on recupere la valeur de x
+      *
+      */
     public void destroy(){
     boolean Choice = true;
         //Request the player to enter a coordinates
         Scanner scanner = new Scanner(System.in);
-        
+        int CoordXi;
+        int CoordYi;
+        short CoordXg = 0;
+        short CoordYg = 0;
         //As long as Choice is true, we continue
         while (Choice == true){
             
-            System.out.print("Enter coordinates to destroy boxes like 'x,y ': ");
+            System.out.print("Enter coordinates to destroy boxes like 'a2': ");
             String coords = scanner.next();
 
             //Split the coordinates
-            String[] parts = coords.split(",");
-            short CoordX = Short.parseShort(parts[0]);
-            short CoordY = Short.parseShort(parts[1]);
+            if (coords.length() == 2){
+                //Check if the first character is a letter
+                if(Character.isLetter(coords.charAt(0))){
+                    //Get the first character
+                    char CoordXChar = coords.charAt(0);
+                    if(Character.isDigit(coords.charAt(1))){
+                        //Get the second character
+                        char CoordYChar = coords.charAt(1);
+
+                        //sends one character per variable
+                        CoordXi = CoordXChar % 97 ;
+                        CoordYi = CoordYChar % 48 ;
+
+                        CoordXg = (short) CoordXi ;
+                        CoordYg = (short) CoordYi ;
+
+                        System.err.println(CoordXg);
+                        System.err.println(CoordYg);
+
+                    }else{
+                        System.err.println("Vos coordonnées ne finissent pas par un chiffre");
+                    }
+                }else{
+                    System.err.println("Vos coordonnées ne commence pas par une lettre");
+                }
+            }else{
+                System.err.println("Chaine de caractère trop longue");
+            }
+
+
+
             
             //Check whether the coordinates are outside the table 
-            if (CoordX >= 0 && CoordX < grid.length && CoordY >= 0 && CoordY < grid[0].length) {
+            if (CoordXg >= 0 && CoordXg < grid.length && CoordYg >= 0 && CoordYg < grid[0].length) {
                 //Check if the box is empty
-                if (grid[CoordX][CoordY] == '.') {
-                    grid[CoordX][CoordY] = '#'; 
+                if (grid[CoordXg][CoordYg -1] == '.') {
+                    grid[CoordXg][CoordYg -1] = '#'; 
                     System.out.println("Box destroyed!");
                     Choice = false; 
                 } else {
