@@ -33,15 +33,29 @@ public class Game {
             grid.place(player); // Assume grid is an object that has a place method
         }
     }
+
+    /**
+     * Function for get the List of players
+      * @return List Player
+     */
     public Players[] getPlayers() {
         return players;
     }
 
+    /**
+     * Fonction for get the actual grid
+     * @return grid
+     */
     public Grid getGrid() {
         return grid;
     }
 
-    //function endgame
+    /**
+     * Function for check if the player can declare endGame (if he stuck)
+     * @param currentPlayers
+     * @param grid
+     * @return true
+     */
     public boolean endgame(Players currentPlayers , char[][] grid) {
 
         int cordx = currentPlayers.getX();

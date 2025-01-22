@@ -13,78 +13,36 @@ public class Players implements Serializable {
         this.y = y;
     }
 
+    /**
+     * Function for get the X pos of an player
+     * @return short
+     */
     public short getX() {
         return x;
     }
 
+    /**
+     * Function for get the Y pos of an player
+     * @return short
+     */
     public short getY() {
         return y;
     }
-
+    /**
+     * Function for get the player's name
+     * @return short
+     */
     public String getName() {
         return name;
     }
 
-//    /**
-//     * Function for move players.
-//     * @param y
-//     * @param x
-//     */
-//    public void move(short x , short y, char[][] grid, Players currentPlayer){
-//        String input;
-//        boolean Choice = true;
-//        //Request the player to enter a letter
-//        //As long as Choice is true, we continue (for input misstaks)
-//        while (Choice == true) {
-//            Scanner sc = new Scanner(System.in);
-//            System.out.println("Veuillez entrer 'z' ou 'q' ou 's' ou 'd' :");
-//            input = sc.nextLine().toLowerCase();
-//            //check if the input is valid
-//            if (input.equals("z") || input.equals("q") || input.equals("s") || input.equals("d")) {
-//
-//                if (input.equals("z")) {
-//                    if (grid[x][y + (byte) 1] == '.') {
-//                        currentPlayer.y += 1;
-//                        Choice = false;
-//                    }
-//                    else {
-//                        System.out.println("Vous ne pouvez pas aller ici");
-//                    }
-//                } else if (input.equals("q")) {
-//                    if (grid[x - 1][y] == '.') {
-//                        currentPlayer.x -= 1;
-//                        Choice = false;
-//
-//                    }
-//                    else {
-//                        System.out.println("Vous ne pouvez pas aller ici");
-//                    }
-//                } else if (input.equals("s")) {
-//                    if (grid[x][y - 1] == '.') {
-//                        currentPlayer.y -= 1;
-//                        Choice = false;
-//
-//                    }
-//                    else {
-//                        System.out.println("Vous ne pouvez pas aller ici");
-//                    }
-//                } else if (input.equals("d")) {
-//                    if (grid[x + 1][y] == '.') {
-//                        currentPlayer.x += 1;
-//                        Choice = false;
-//
-//                    }
-//                    else {
-//                        System.out.println("Vous ne pouvez pas aller ici");
-//                    }
-//                }
-//
-//            } else {
-//                System.out.println("Veuillez entrer une lettre valide");
-//            }
-//        }
-//    }
-
+    /**
+     * Function for move player
+     * @param x
+     * @param y
+     * @param grid
+     * @param currentPlayer
+     */
     public void move(short x, short y, char[][] grid, Players currentPlayer) {
         Scanner sc = new Scanner(System.in);
         boolean validMove = false;

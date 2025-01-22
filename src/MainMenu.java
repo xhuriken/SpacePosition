@@ -1,10 +1,15 @@
 import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 import java.util.Scanner;
 
 public class MainMenu {
 
+
+    /**
+     * Function for start the menu
+     */
     public static void SetupMenu(){
         // Load and play background music
         Clip ambiance = loadSound("Theme.wav");
@@ -62,7 +67,9 @@ public class MainMenu {
         scanner.close();
     }
 
-    // Method to draw the title
+    /**
+     * Function for show the game Title in cli
+     */
     private static void drawTitle() {
         final String RESET = "\u001B[0m";
         final String YELLOW = "\u001B[33m";
@@ -75,7 +82,9 @@ public class MainMenu {
                 "                                                                                                      " + RESET);
     }
 
-    // Method to draw the spaceship
+    /**
+     * Function for show the logo in cli
+     */
     private static void drawSpaceship() {
         final String GREEN = "\u001B[32m";
         final String RESET = "\u001B[0m";
@@ -95,7 +104,9 @@ public class MainMenu {
                 "⠀⠀⠀⠀⠀⠀                ⠀⠀                ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀     \n" + RESET);
     }
 
-    // Method to display the main menu
+    /**
+     * function for show the mainmenu option in cli
+     */
     private static void displayMainMenu() {
         final String CYAN = "\u001B[36m";
         final String RESET = "\u001B[0m";
@@ -112,7 +123,9 @@ public class MainMenu {
         System.out.println("                 ============================================================== ");
     }
 
-    // Method to simulate playing the game
+    /**
+     * Function for start the game
+     */
     private static void playGame() {
         Scanner sc = new Scanner(System.in);
 
@@ -124,7 +137,10 @@ public class MainMenu {
         Game game = new Game((byte) nbPlayers);
 
         boolean gameRunning = true;
+        Random rand = new Random();
         int currentPlayerIndex = 0;
+        currentPlayerIndex = (currentPlayerIndex + rand.nextInt(nbPlayers));
+        System.out.println(currentPlayerIndex);
 
         while (gameRunning) {
             // Display the grid
@@ -162,7 +178,9 @@ public class MainMenu {
         }
     }
 
-    // Method to display game rules
+    /**
+     * Function for show Rules in cli
+     */
     private static void showRules() {
         final String PURPLE = "\u001B[35m";
         final String RESET = "\u001B[0m";
@@ -174,7 +192,9 @@ public class MainMenu {
         System.out.println("                 ================================================================== ");
     }
 
-    // Method to display credits
+    /**
+     * Function for show Credit in cli
+     */
     private static void showCredits() {
         final String BLUE = "\u001B[34m";
         final String RESET = "\u001B[0m";
@@ -190,7 +210,9 @@ public class MainMenu {
         System.out.println("                 ================================================================== ");
     }
 
-    // Method to wait for user input before returning to the main menu
+    /**
+     * Function for wait input tu return
+     */
     private static void waitForReturnToMenu() {
         System.out.println("\nPress any key to return to the menu...");
         try {
@@ -200,6 +222,11 @@ public class MainMenu {
         }
     }
 
+    /**
+     * Function for ask Players name and use it into game
+     * @param numberOfPlayers
+     * @return String[]
+     */
     public static String[] PlayerNames(int numberOfPlayers) {
         Scanner sc = new Scanner(System.in);
         String[] playerNames = new String[numberOfPlayers];
@@ -228,8 +255,11 @@ public class MainMenu {
     }
 
 
-
-    // Method to load a sound file
+    /**
+     * Function for load Sound
+     * @param filePath
+     * @return Clip
+     */
     private static Clip loadSound(String filePath) {
         try {
             File audioFile = new File(filePath);
@@ -247,7 +277,11 @@ public class MainMenu {
         return null;
     }
 
-    // Method to adjust the volume of the sound
+    /**
+     * Function for set the volume music
+     * @param clip
+     * @param volume
+     */
     private static void setVolume(Clip clip, float volume) {
         if (clip != null) {
             try {

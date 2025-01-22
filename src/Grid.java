@@ -10,7 +10,9 @@ public class Grid {
         initializeGrid();
     }
 
-    //Cette fonction est peu être pas si utile que ça les frr
+    /**
+     * Function for initialize de grid (btw its useless, we can put this code inside 'public grid' nevermind)
+     */
     private void initializeGrid() {
 
         //Moin d'oppération :
@@ -33,10 +35,18 @@ public class Grid {
 //            }
 //        }
     }
+
+    /**
+     * Function for spawn player in the grid
+     * @param player
+     */
     public void place(Players player) {
         grid[player.getX()][player.getY()] = 'J';
     }
 
+    /**
+     * function for display the grid in cli
+     */
     public void displayGrid() {
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
@@ -47,9 +57,7 @@ public class Grid {
     }
 
     /**
-     * Case destruction function
-     * @param x
-     * @param y
+     * Function for destroy case
      */
     public void destroy(){
     boolean Choice = true;
