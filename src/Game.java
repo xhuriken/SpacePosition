@@ -8,19 +8,18 @@ public class Game {
     private char[][] gridload;
 
     public Game(byte nbPlayer, boolean isGameLoaded) {
-
         // if game is loaded, load the grid and players
         if (isGameLoaded) {
             this.gridload = Load_data.Getgridload();
             this.grid = new Grid(gridload);
             InitializePlayer(true);
-        // Create a new game with a new grid and players
+            // Create a new game with a new grid and players
         } else {
             this.grid = new Grid();
             this.nbPlayer = nbPlayer;
             this.players = new Players[nbPlayer];
             InitializePlayer(false);
-            }
+        }
     }
     /**
      * Function to initialize the players according to the number of players given in 'Game' parameter
