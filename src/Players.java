@@ -1,5 +1,5 @@
-import java.util.Scanner;
 import java.io.Serializable;
+import java.util.Scanner;
 
 public class Players implements Serializable {
 
@@ -58,7 +58,9 @@ public class Players implements Serializable {
         boolean validMove = false;
 
         while (!validMove) {
-            System.out.print("                 Veuillez entrer 'z' ou 'q' ou 's' ou 'd' :");
+            System.out.print("                 Enter your move (Z, Q, S, D):");
+            System.out.print("                 Or type 'qs' to save and quit the game.");
+            System.out.print("                 or type 'quit' to quit the game.");
             String input = sc.nextLine().toLowerCase();
 
             short newX = currentPlayer.x;
@@ -84,7 +86,7 @@ public class Players implements Serializable {
                 case "quit":
                     MainMenu.setupMenu();
                 default:
-                    System.out.println("                 Veuillez entrer une lettre valide");
+                    System.out.println("                 Please enter a valid move.");
                     continue;
             }
             //Check if the new position is valid
