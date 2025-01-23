@@ -311,45 +311,56 @@ public class MainMenu {
 
     private static void showLoad() {
         final String BLUE = "\u001B[34m";
+        final String YELLOW = "\u001B[33m";
         final String RESET = "\u001B[0m";
         System.out.println("                 =========================== LOAD ============================ \n");
+        
         int compteur = 1;
         File fichier;
-        String color = null; // Declare color variable
-        fichier = new File("joueurs" + "_" + compteur + "." + "bin" );
+        String color;
+
         while (true) {
-            // File name
             fichier = new File("joueurs_" + compteur + ".bin");
-                if (compteur % 2 == 0){
-                    color =  "\u001B[34m";
-                }
-                else{
-                    color = "\u001B[33m";
-                }
-            if (fichier.exists()) { // Check if the file exists
-                System.out.println("" + color + "["+compteur+" : joueurs"+"_" + compteur + ".bin]"+RESET);
+            if (compteur % 2 == 0) {
+                color = BLUE;
             } else {
-                break; // Stop the loop if the file does not exist
+                color = YELLOW;
             }
-            compteur++; // Increment the counter
+            if (fichier.exists()) {
+                System.out.println(color + "[" + compteur + " : joueurs_" + compteur + ".bin]" + RESET);
+            } else {
+                break;
+            }
+            compteur++;
         }
-        System.out.println(""+color+ "["+compteur+" : quit]"+RESET);
+        // Display the quit option
+        System.out.println("" + color + "[" + compteur + " : quit]" + RESET);
         System.out.println("                 ================================================================== ");
+
         Scanner scannerChoice = new Scanner(System.in);
-        if (scannerChoice.hasNextLine()){
-            String choice = scannerChoice.nextLine();
+        if (scannerChoice.hasNextLine()) {
+            String choice = scannerChoice.nextLine().trim();
             System.out.println("You entered: " + choice);
+
             try {
-                if (choice.equals("quit")) {
-                    MainMenu.displayMainMenu();
-                } else if (Integer.parseInt(choice) < compteur) {
-                    Load_data.Load_data(choice);
-                    playGame(true);
+                if (choice.isEmpty()) {
+                    System.out.println("Invalid input. Please enter a valid number or 'quit'.");
+                    showLoad();
+                } else if (choice.equalsIgnoreCase("quit") || Integer.parseInt(choice) == compteur) {
+                    displayMainMenu();
                 } else {
-                    System.out.println("Invalid choice. Please try again.");
+                    int choiceNumber = Integer.parseInt(choice);
+                    if (choiceNumber > 0 && choiceNumber < compteur) {
+                        Load_data.Load_data(choice);
+                        playGame(true);
+                    } else {
+                        System.out.println("Invalid choice. Please try again.");
+                        showLoad();
+                    }
                 }
-            } catch (AssertionError e) {
-                System.out.println("Invalid choice. Please try again.");
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid number or 'quit'.");
+                showLoad();
             }
         }
     }
