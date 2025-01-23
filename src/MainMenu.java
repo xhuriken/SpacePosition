@@ -1,5 +1,7 @@
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Scanner;
 import javax.sound.sampled.*;
 
@@ -9,6 +11,7 @@ public class MainMenu {
      * Function for start the menu
      */
     public static void setupMenu(){
+        Main.clearScreen();
         // Load and play background music
         Clip ambiance = loadSound("Theme.wav");
 
@@ -269,25 +272,31 @@ public class MainMenu {
 
     /**
      * Function for load Sound
-     * @param filePath
+     * @param fileName
      * @return Clip
      */
-    private static Clip loadSound(String filePath) {
+    private static Clip loadSound(String fileName) {
         try {
-            File audioFile = new File(filePath);
-            if (audioFile.exists()) {
-                AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
-                Clip clip = AudioSystem.getClip();
-                clip.open(audioStream);
-                return clip;
-            } else {
-                System.out.println("Audio file " + filePath + " does not exist.");
+            // Charger le fichier en tant que ressource
+            InputStream audioSrc = Main.class.getResourceAsStream("/" + fileName);
+            if (audioSrc == null) {
+                System.out.println("Audio file " + fileName + " not found in resources.");
+                return null;
             }
+
+            // Convertir le flux en AudioInputStream
+            InputStream bufferedIn = new BufferedInputStream(audioSrc);
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(bufferedIn);
+
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            return clip;
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             System.out.println("Error loading sound: " + e.getMessage());
         }
         return null;
     }
+
 
     /**
      * Function for set the volume music

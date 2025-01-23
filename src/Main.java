@@ -34,7 +34,8 @@ public class Main {
             while (gameRunning) {
                 // Get the current player
                 Players currentPlayer = game.getPlayers()[currentPlayerIndex];
-                System.out.println("                 " + currentPlayer.getName() + "'s turn!");
+                String playerColor = currentPlayer.getColor();
+                System.out.println(playerColor + "                 " + currentPlayer.getName() + "'s turn!" + "\u001B[0m");
                 //System.out.println(currentPlayer.getX() + " " + currentPlayer.getY());
                 // Move the player
                 currentPlayer.move(currentPlayer.getX(), currentPlayer.getY(), game.getGrid().grid, currentPlayer, currentPlayer.getName(), game.getPlayers());
@@ -98,7 +99,8 @@ public class Main {
                 }
                 // Obtenir le joueur actuel
                 Players currentPlayer = game.getPlayers()[currentPlayerIndex];
-                System.out.println("                 " + currentPlayer.getName() + "'s turn!");
+                String playerColor = currentPlayer.getColor();
+                System.out.println(playerColor + "                 " + currentPlayer.getName() + "'s turn!" + "\u001B[0m");
 
                 // Move the player
                 currentPlayer.move(currentPlayer.getX(), currentPlayer.getY(), game.getGrid().grid, currentPlayer, currentPlayer.getName(), game.getPlayers());

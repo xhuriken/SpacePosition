@@ -3,6 +3,7 @@
     <output-path>$PROJECT_DIR$/out/artifacts/SpacePosition_jar</output-path>
     <root id="archive" name="SpacePosition.jar">
       <element id="module-output" name="SpacePosition" />
+      <element id="dir-copy" path="$PROJECT_DIR$/src/ressources" />
     </root>
   </artifact>
 </component>

@@ -30,46 +30,56 @@ public class Game {
     public void InitializePlayer(boolean isGameLoaded) {
 
         if (isGameLoaded) {
-            // Load players from the file
+            // Charger les joueurs depuis un fichier
             Players[] loadedPlayers = Load_data.Getplayersload();
             if (loadedPlayers == null) {
                 System.out.println("No players loaded.");
                 return;
-            }
-            else{
+            } else {
                 players = loadedPlayers;
-
             }
+
             for (Players player : players) {
                 System.out.println(player.getName() + ", X: " + player.getX() + ", Y: " + player.getY());
             }
 
+            // Placer les joueurs sur la grille
             for (Players player : players) {
                 grid.place(player);
-                short xPosition = player.getX();
-                short yPosition = player.getY();
             }
-        }
-        else{
-            // Get the player names dynamically based on the number of players
+        } else {
+            // Obtenir dynamiquement les noms des joueurs en fonction du nombre de joueurs
             String[] playerNames = playerNames(nbPlayer);
 
-            // Define colors for each player
-            String[] playerColors = {"\u001B[31m", "\u001B[34m", "\u001B[32m", "\u001B[33m"}; // Red, Blue, Green, Yellow
+            // Définir les couleurs pour chaque joueur
+            String[] playerColors = {"\u001B[31m", "\u001B[34m", "\u001B[32m", "\u001B[33m"}; // Rouge, Bleu, Vert, Jaune
 
-            // Initialize players based on the number of players, their names, and colors
+            // Définir les positions par défaut des joueurs
+            short[][] defaultPositions = {
+                    {4, 5}, // Player 1: C5; L6
+                    {5, 5}, // Player 2: C6; L6
+                    {4, 6}, // Player 13: C5; L7
+                    {5, 6}  // Player 4: C6; L7
+            };
+
+            // Initialiser les joueurs en fonction de leur position, nom, et couleur
             for (int i = 0; i < nbPlayer; i++) {
-                short xPosition = (short) (5 + i);  // Example: Adjust player starting positions
-                short yPosition = 6;  // Same for all players (can be adjusted)
-                players[i] = new Players(playerNames[i], xPosition, yPosition, playerColors[i]);
+                if (i < defaultPositions.length) {
+                    short xPosition = defaultPositions[i][0];
+                    short yPosition = defaultPositions[i][1];
+                    players[i] = new Players(playerNames[i], xPosition, yPosition, playerColors[i]);
+                } else {
+                    System.out.println("Warning: Maximum default positions exceeded.");
+                }
             }
 
-            // Place each player on the grid
+            // Placer chaque joueur sur la grille
             for (Players player : players) {
                 grid.place(player);
             }
         }
     }
+
 
     /**
      * Function for get the List of players
