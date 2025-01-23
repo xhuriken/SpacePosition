@@ -198,7 +198,7 @@ public class MainMenu {
                     int choiceNumber = Integer.parseInt(choice);
                     if (choiceNumber > 0 && choiceNumber < compteur) {
                         Load_data.Load_data(choice);
-                        playGame(true);
+                        Main.playGame(true);
                     } else {
                         System.out.println("Invalid choice. Please try again.");
                         showLoad();
