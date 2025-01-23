@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class Game {
 
     private Grid grid;
@@ -50,7 +52,7 @@ public class Game {
         }
         else{
             // Get the player names dynamically based on the number of players
-            String[] playerNames = MainMenu.playerNames(nbPlayer);
+            String[] playerNames = playerNames(nbPlayer);
 
             // Define colors for each player
             String[] playerColors = {"\u001B[31m", "\u001B[34m", "\u001B[32m", "\u001B[33m"}; // Red, Blue, Green, Yellow
@@ -136,5 +138,53 @@ public class Game {
             }
         }
         players = newPlayers;
+    }
+
+    /**
+     * Function for ask Players name and use it into game
+     * @param numberOfPlayers
+     * @return String[]
+     */
+    public static String[] playerNames(int numberOfPlayers) {
+        Scanner sc = new Scanner(System.in);
+        String[] playerNames = new String[numberOfPlayers];
+
+        for (int i = 0; i < numberOfPlayers; i++) {
+            System.out.printf("                 Enter the name for player %d: ", i + 1);
+            String name = sc.nextLine().trim(); // Read and trim whitespace
+
+            // Validate the name length and uniqueness
+            while (name.length() < 3 || name.length() > 10 || nameTaken(playerNames, name)) {
+                if (name.isEmpty()) {
+                    System.out.println("                 Name cannot be empty.");
+                } else if (name.length() < 3) {
+                    System.out.println("                 Name is too short. It must be at least 3 characters.");
+                } else if (name.length() > 10) {
+                    System.out.println("                 Name is too long. It must be no more than 10 characters.");
+                } else if (nameTaken(playerNames, name)) {
+                    System.out.println("                 This name is already taken. Please choose a different name.");
+                }
+                System.out.printf("                 Enter the name for player %d: ", i + 1);
+                name = sc.nextLine().trim();
+            }
+            // Store the valid and unique name
+            playerNames[i] = name;
+        }
+        return playerNames;
+    }
+
+    /**
+     * Verify if name's already exist
+     * @param playerNames
+     * @param name
+     * @return
+     */
+    public static boolean nameTaken(String[] playerNames, String name) {
+        for (String existingName : playerNames) {
+            if (existingName != null && existingName.equalsIgnoreCase(name)) {
+                return true; // Name is already taken
+            }
+        }
+        return false; // Name is available
     }
 }

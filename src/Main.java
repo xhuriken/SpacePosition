@@ -10,6 +10,7 @@ public class Main {
     static boolean gameRunning = true;
     static int currentPlayerIndex = 0;
     static int nbPlayers = 0;
+    static Bot currentBot = null;
 
     public static void main(String[] args) {
         MainMenu.setupMenu();
@@ -65,7 +66,9 @@ public class Main {
             boolean hasBot = modeChoice.equals("2");
 
             if (hasBot) {
+                currentBot = game.getBot();
                 game.getGrid().placeBotOnGrid();
+
             }
 
             Random rand = new Random();
@@ -93,7 +96,6 @@ public class Main {
                 // Vérifier si tous les joueurs ont joué leur tour
                 if (turnCounter % nbPlayers <= 0 && hasBot) {
                     System.out.println("BotTour");
-                    Bot currentBot = game.getBot();
                     Random random = new Random();
                     int gridSize = game.getGrid().getSize(); // Taille de la grille
 
@@ -116,6 +118,8 @@ public class Main {
                         }
                     }
                     currentBot.moveTo(game.getGrid().grid, newX, newY);
+                    game.getGrid().displayGrid(game.getPlayers());
+
                     //System.out.println("Bot moved to new position: (" + newX + ", " + newY + ")");
                 }
                 game.endGameLogic(currentPlayer);

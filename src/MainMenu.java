@@ -93,8 +93,6 @@ public class MainMenu {
         final String RESET = "\u001B[0m";
 
         System.out.println(GREEN +
-                "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n" +
-                "                                ⠀⠀⠀  ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n" +
                 "                                ⠀⠀⠀⠀⠀⠀⠀ ⠀⠀⠀⠀  ⢀⣠⠴⠶⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n" +
                 "                                ⠀⠀⠀⠀⠀⠀⠀⠀ ⠀ ⣠⠞⠉⠀⠀⠀ ⠀⠾⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀\n" +
                 "                                ⠀⠀⠀⠀⠀ ⣠⡤⠶⢾⠃⠀⠀⠀⠀⠀⠀⠀  ⠈⠛⠈⣷⠶⠤⣄⡀⠀⠀⠀⠀\n" +
@@ -102,9 +100,7 @@ public class MainMenu {
                 "                                ⠀⢸⡁⠀⠀⠉⢁⡤⡝⠳⢤⣤⣄⣀⣀⣀⣤⡤⠶⢫⡤⡌⠉⠀⠀⠀   ⡷⠀⠀\n" +
                 "⠀                                ⠈⠳⣄⠀⠀⠈⠛⠁ ⠀⣞⡶⠀⡴⢦⠀⢴⣳⠀⠈⠛⠁⠀⠀   ⣀⡾⠁⠀⠀\n" +
                 "                                ⠀⠀⠀⠀⠈⠙⠶⢤⣄⣀⠀⠀⠀  ⠙⠋⠀⠀⠁  ⠀⣀⣀⣤⠴⠛⠁⠀⠀⠀⠀\n" +
-                "⠀                                ⠀⠀⠀⠀⠀⠀⠀⠀  ⠉⠉⠛⠛⠒⠒⠒⠒⠛⠛⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀\n" +
-                "⠀⠀⠀⠀⠀⠀⠀                ⠀                ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀     \n" +
-                "⠀⠀⠀⠀⠀⠀                ⠀⠀                ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀     \n" + RESET);
+                "⠀                                ⠀⠀⠀⠀⠀⠀⠀⠀  ⠉⠉⠛⠛⠒⠒⠒⠒⠛⠛⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀\n" + RESET);
     }
 
     /**
@@ -233,36 +229,6 @@ public class MainMenu {
         }
     }
 
-    /**
-     * Function for ask Players name and use it into game
-     * @param numberOfPlayers
-     * @return String[]
-     */
-    public static String[] playerNames(int numberOfPlayers) {
-        Scanner sc = new Scanner(System.in);
-        String[] playerNames = new String[numberOfPlayers];
-
-        for (int i = 0; i < numberOfPlayers; i++) {
-            System.out.printf("                 Enter the name for player %d: ", i + 1);
-            String name = sc.nextLine().trim(); // Read and trim whitespace
-
-            // Validate the name length
-            while (name.length() < 3 || name.length() > 10) {
-                if (name.isEmpty()) {
-                    System.out.println("                 Name cannot be empty.");
-                } else if (name.length() < 3) {
-                    System.out.println("                 Name is too short. It must be at least 3 characters.");
-                } else if (name.length() > 10) {
-                    System.out.println("                 Name is too long. It must be no more than 10 characters.");
-                }
-                System.out.printf("                 Enter the name for player %d: ", i + 1);
-                name = sc.nextLine().trim();
-            }
-            // Store the valid name
-            playerNames[i] = name;
-        }
-        return playerNames;
-    }
 
     /**
      * Function for load Sound

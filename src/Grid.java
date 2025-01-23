@@ -74,6 +74,7 @@ public class Grid {
             // Check if the cell is empty
             if (isCellEmpty(x, y)) {
                 grid[x][y] = 'B'; // Place the bot on the grid
+                Main.currentBot.setPosition(x, y);
                 placed = true;
             }
         }
@@ -146,83 +147,88 @@ public class Grid {
     /**
      * Function for destroy case
      */
-    public void destroy(){
-    boolean Choice = true;
-        //Request the player to enter a coordinates
-        Scanner scanner = new Scanner(System.in);
-        int CoordXi;
-        int CoordYi;
-        int CoordZi;
-        short CoordXg = 0;
-        short CoordYg = 0;
+    public void destroy() {
+        boolean choice = true; // Continue looping until a box is destroyed
+        short[] coordinates = new short[2]; // Array to hold X and Y coordinates
 
-        //As long as Choice is true, we continue
-        while (Choice){
-            
+        while (choice) {
+            // Validate and update coordinates using ValidatorCo
+            validateCord(coordinates);
+
+            // Extract X and Y coordinates from the array
+            short CoordXg = coordinates[0];
+            short CoordYg = coordinates[1];
+
+            // Check if the coordinates are within grid boundaries
+            if (CoordXg >= 0 && CoordXg < grid.length && CoordYg > 0 && CoordYg <= grid[0].length) {
+                // Check if the target cell is empty ('.')
+                if (grid[CoordXg][CoordYg - 1] == '.') {
+                    grid[CoordXg][CoordYg - 1] = '#'; // Mark the cell as destroyed
+                    System.out.println("                 Box destroyed!");
+                    choice = false; // Exit the loop after success
+                } else {
+                    System.out.println("                 The case is occupied. Try again!");
+                }
+            } else {
+                System.out.println("                 Coordinates out of bounds. Try again!");
+            }
+        }
+    }
+
+    /**
+     * Function to validate coordinates entered by the user.
+     * Updates the coordinates `CoordXg` and `CoordYg` via an array passed by reference.
+     */
+    public void validateCord(short[] coordinates) {
+        Scanner scanner = new Scanner(System.in); // Scanner for user input
+
+        while (true) { // Loop until valid input is provided
             System.out.print("                 Enter coordinates to destroy boxes like 'a2': ");
             String coords = scanner.next();
+
+            // Ensure input is at least 2 characters long
+            if (coords.length() < 2) {
+                System.err.println("                 Invalid input! Coordinates must be at least two characters (e.g., 'a2').");
+                continue; // Ask again
+            }
 
             if (coords.length() <= 3) {
                 // Check if the first character is a letter
                 if (Character.isLetter(coords.charAt(0))) {
-                    // Get the first character
                     char CoordXChar = coords.charAt(0);
+
                     // Check if the second character is a digit
                     if (Character.isDigit(coords.charAt(1))) {
-                        // If the string has a third character
-                        if (coords.length() == 3) {
-                            // Check if the third character is also a digit
-                            if (Character.isDigit(coords.charAt(2))) {
-                                char CoordZChar = coords.charAt(2);
+                        int CoordXi = CoordXChar % 97; // Convert 'a' to index 0
+                        int CoordYi;
 
-                                // Process the characters as integers
-                                CoordXi = CoordXChar % 97;
-                                CoordYi = coords.charAt(1) % 48;
-                                CoordZi = coords.charAt(2) % 48;
-
-                                CoordXg = (short) CoordXi;
-                                CoordYg = (short) (CoordYi + CoordZi);
-
-
-                                System.err.println(CoordXg);
-                                System.err.println(CoordYg);
-
-                            } else {
-                                System.err.println("The third character is not a digit");
-                            }
+                        if (coords.length() == 3 && Character.isDigit(coords.charAt(2))) {
+                            // Coordinates with three characters
+                            int CoordZi = coords.charAt(2) % 48;
+                            CoordYi = (coords.charAt(1) % 48) * 10 + CoordZi;
                         } else {
-                            // If the string contains only two characters
-                            CoordXi = CoordXChar % 97;
+                            // Coordinates with two characters
                             CoordYi = coords.charAt(1) % 48;
+                        }
 
-                            CoordXg = (short) CoordXi;
-                            CoordYg = (short) CoordYi;
+                        // Validate that coordinates are within bounds
+                        if (CoordXi >= 0 && CoordXi < 12 && CoordYi >= 0 && CoordYi < 12) {
+                            coordinates[0] = (short) CoordXi;
+                            coordinates[1] = (short) CoordYi;
 
-                            System.err.println(CoordXg);
-                            System.err.println(CoordYg);
+                            System.out.println("                 Valid coordinates: X=" + coordinates[0] + ", Y=" + coordinates[1]);
+                            break; // Exit loop with valid input
+                        } else {
+                            System.err.println("                 Coordinates must be between 0 and 11 for both X and Y.");
                         }
                     } else {
-                        System.err.println("The second character is not a digit");
+                        System.err.println("                 The second character is not a digit.");
                     }
                 } else {
-                    System.err.println("The first character is not a letter");
+                    System.err.println("                 The first character is not a letter.");
                 }
             } else {
-                System.err.println("The string is too long");
-            }
-
-            //Check whether the coordinates are outside the table 
-            if (CoordXg >= 0 && CoordXg < grid.length && CoordYg >= 0 && CoordYg < grid[0].length) {
-                //Check if the box is empty
-                if (grid[CoordXg][CoordYg -1] == '.') {
-                    grid[CoordXg][CoordYg -1] = '#'; 
-                    System.out.println("                 Box destroyed!");
-                    Choice = false; 
-                } else {
-                    System.out.println("                 The case is occupied ;) Try again!");
-                }
-            } else {
-                System.out.println("                 Coordinates out of bounds :( Try again !");
+                System.err.println("                 The input is too long. Use a format like 'a2' or 'a11'.");
             }
         }
     }

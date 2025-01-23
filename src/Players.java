@@ -58,9 +58,10 @@ public class Players implements Serializable {
         boolean validMove = false;
 
         while (!validMove) {
-            System.out.print("                 Enter your move (Z, Q, S, D):");
-            System.out.print("                 Or type 'qs' to save and quit the game.");
-            System.out.print("                 or type 'quit' to quit the game.");
+            System.out.print  ("                 Enter your move (z, q, s, d):");
+            System.out.print  ("                 Or type 'qs' to save and quit the game.");
+            System.out.println("                 or type 'quit' to quit the game.");
+            System.out.print  ("                 Type... :");
             String input = sc.nextLine().toLowerCase();
 
             short newX = currentPlayer.x;
