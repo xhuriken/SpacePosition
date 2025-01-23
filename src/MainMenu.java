@@ -358,20 +358,40 @@ public class MainMenu {
         final String YELLOW = "\u001B[33m";
         final String BLUE = "\u001B[34m";
         final String RESET = "\u001B[0m";
+        System.out.println("                 =========================== SCORES ============================ \n");
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Do you want the scores in ascending or descending order?");
+        System.out.println("["+YELLOW+"1 "+RESET+": "+BLUE+"Ascending]"+RESET);
+        System.out.println("["+YELLOW+"2"+RESET+" : "+BLUE+"Descending]"+RESET);
+        System.out.print("Enter your choice: ");
+
         // Create a new instance of the fast_sorting class
         fast_sorting sorter = new fast_sorting();
         // Retrieve the scoreboard
         String[][] scoresArray = sorter.Datascore();
-        // Sort the table by score
-        sorter.quickSort(scoresArray, 0, scoresArray.length - 1);  // Correction ici
+        
 
-        //Display data [player][Scores]
-        System.out.println("                 =========================== SCORES ============================ \n");
-        // display table
-        for (String[] entry : scoresArray) {
-            System.out.println("                                        "+BLUE + entry[0] + RESET + " : " + YELLOW + entry[1] + RESET);
+        String choice = scanner.nextLine();
+        if (choice.equals("1")) {
+            sorter.quickSort(scoresArray, 0, scoresArray.length - 1, false); 
+            for (String[] entry : scoresArray) {
+                System.out.println("                                        "+BLUE + entry[0] + RESET + " : " + YELLOW + entry[1] + RESET);
+                       
+            }
+            System.out.println("                 ================================================================== ");
+        } else if (choice.equals("2")) {
+            sorter.quickSort(scoresArray, 0, scoresArray.length - 1,true); 
+            for (String[] entry : scoresArray) {
+                System.out.println("                                        "+BLUE + entry[0] + RESET + " : " + YELLOW + entry[1] + RESET);
+                
+            }
+            System.out.println("                 ================================================================== ");
+        } else {
+            System.out.println("Invalid choice. Please try again.");
+            showScore();
         }
-        System.out.println("                 ================================================================== ");
+
+       
     }
 
     /**
