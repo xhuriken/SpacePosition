@@ -14,12 +14,6 @@ public class fast_sorting {
         // Retrieves scores in the form of a 2D table: [Name, Score].
         String[][] scoresArray = save_score.ScorestoSimpleArray();
 
-        // To display the table before sorting
-        System.out.println("Avant tri : ");
-        for (String[] entry : scoresArray) {
-            System.out.println(entry[0] + " : " + entry[1]);
-        }
-
         return scoresArray;
     }
 
@@ -56,22 +50,5 @@ public class fast_sorting {
         arr[end] = temp;
 
         return i + 1;
-    }
-
-    public static void main(String[] args) {
-        // Create a new instance of the fast_sorting class
-        fast_sorting sorter = new fast_sorting();
-
-        // Retrieve the scoreboard
-        String[][] scoresArray = sorter.Datascore();
-
-        // Sort the table by score
-        sorter.quickSort(scoresArray, 0, scoresArray.length - 1);  // Correction ici
-
-        // display table
-        System.out.println("\nAprès tri : ");
-        for (String[] entry : scoresArray) {
-            System.out.println(entry[0] + " : " + entry[1]);
-        }
     }
 }

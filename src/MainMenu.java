@@ -355,9 +355,19 @@ public class MainMenu {
     private static void showScore(){
         final String BLUE = "\u001B[34m";
         final String RESET = "\u001B[0m";
+        // Create a new instance of the fast_sorting class
+        fast_sorting sorter = new fast_sorting();
+        // Retrieve the scoreboard
+        String[][] scoresArray = sorter.Datascore();
+        // Sort the table by score
+        sorter.quickSort(scoresArray, 0, scoresArray.length - 1);  // Correction ici
+
         //Display data [player][Scores]
         System.out.println("                 =========================== SCORES ============================ \n");
-        // System.out.print();
+        // display table
+        for (String[] entry : scoresArray) {
+            System.out.println(entry[0] + " : " + entry[1]);
+        }
         System.out.println("                 ================================================================== ");
     }
 
