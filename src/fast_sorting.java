@@ -46,8 +46,11 @@ public class fast_sorting {
 
         return i+1;
     }
+
     public static void main(String[] args) {
+        // Création d'une nouvelle instance de la classe fast_sorting
         fast_sorting sorter = new fast_sorting();
+        Save_score score = new Save_score();
         sorter.Datascore();
     }
 }
