@@ -1,9 +1,11 @@
 import java.util.Scanner;
+import java.util.Random;
 
 public class Game {
 
-    private Grid grid;
+    private static Grid grid;
     private Players[] players;
+    private static Bot bot; // Un bot unique
     private byte nbPlayer;
     private char[][] gridload;
 
@@ -18,9 +20,11 @@ public class Game {
             this.grid = new Grid();
             this.nbPlayer = nbPlayer;
             this.players = new Players[nbPlayer];
+            this.bot = new Bot();
             InitializePlayer(false);
         }
     }
+
     /**
      * Function to initialize the players according to the number of players given in 'Game' parameter
      */
@@ -68,7 +72,26 @@ public class Game {
         }
     }
 
+    /**
+     * Function for place the minigame bot in grid
+     */
+    public static void placeBotOnGrid() {
 
+        Random random = new Random();
+        int gridSize = grid.getSize();
+
+        while (true) {
+            int x = random.nextInt(gridSize);
+            int y = random.nextInt(gridSize);
+
+            // Vérifier si la case est vide avant de placer le bot
+            if (grid.isCellEmpty(x, y)) {
+                bot.setPosition(x, y);
+                grid.placeBot(bot);
+                break;
+            }
+        }
+    }
 
     /**
      * Function for get the List of players
@@ -78,6 +101,9 @@ public class Game {
         return players;
     }
 
+    public Bot getBot() {
+        return bot;
+    }
     /**
      * Fonction for get the actual grid
      * @return grid

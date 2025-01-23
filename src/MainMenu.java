@@ -1,12 +1,11 @@
+import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 import java.util.Scanner;
-import javax.sound.sampled.*;
 
 public class MainMenu {
-
-
+    public static boolean withBot = true;
     /**
      * Function for start the menu
      */
@@ -177,42 +176,51 @@ public class MainMenu {
         } else {
             System.out.println("                 Starting a new game...");
             Scanner sc = new Scanner(System.in);
-            boolean choice = true;
-            int nbPlayers = 0;
-            while (choice) {
-                try {
-                    // Ask the number of players
-                    System.out.print("                 How many players? (2 to 4): ");
-                    // Read user input
-                    nbPlayers = sc.nextInt();
-                    // Check if the number is within the valid range
-                    if (nbPlayers >= 2 && nbPlayers <= 4) {
-                        choice = false; // Valid input, exit the loop
-                    } else {
-                        System.out.println("                 Please enter a number between 2 and 4.");
-                    }
-                } catch (Exception e) {
-                    System.out.println("                 Invalid input. Please enter a number between 2 and 4.");
-                    sc.nextLine(); // Clear the invalid input
-                }
+
+
+            // Submenu for game mode selection
+            System.out.println("                 Choose your game mode:");
+            System.out.println("                   1. Player vs Player");
+            System.out.println("                   2. Player vs Bot");
+            System.out.print("                 Enter your choice: ");
+            String modeChoice = sc.nextLine();
+
+            // Validate the choice
+            while (!modeChoice.equals("1") && !modeChoice.equals("2")) {
+                System.out.println("Invalid choice. Please enter 1 or 2.");
+                System.out.print("                 Enter your choice: ");
+                modeChoice = sc.nextLine();
             }
 
-            // Initialize the game
-            Game game = new Game((byte) nbPlayers, isGameLoaded);
-            boolean gameRunning = true;
-            Random rand = new Random();
-            int currentPlayerIndex = 0;
-            currentPlayerIndex = (currentPlayerIndex + rand.nextInt(nbPlayers));
-            //System.out.println(currentPlayerIndex);
+            // Ask the number of players
+            System.out.print("                 How many players? (2 to 4): ");
+            int nbPlayers = sc.nextInt();
+            sc.nextLine(); // Consume newline
+        // Initialize the game
+        Game game = new Game((byte) nbPlayers, isGameLoaded);
+
+        // Determine if bot is included
+        boolean hasBot = modeChoice.equals("2");
+
+        if (hasBot) {
+            Game.placeBotOnGrid();
+        }
+
+        boolean gameRunning = true;
+        Random rand = new Random();
+        int currentPlayerIndex = 0;
+        currentPlayerIndex = (currentPlayerIndex + rand.nextInt(nbPlayers));
+        game.getGrid().displayGrid(game.getPlayers());
+
+        int turnCounter = 0; // Compteur de tours pour suivre le moment où le bot doit jouer
+
+        while (gameRunning) {
+            // Afficher la grille
             game.getGrid().displayGrid(game.getPlayers());
 
-            while (gameRunning) {
-                // Display the grid
-                Main.clearScreen();
-                // Get the current player
-                Players currentPlayer = game.getPlayers()[currentPlayerIndex];
-                System.out.println("\n                 " + currentPlayer.getName() + "'s turn!");
-                //System.out.println(currentPlayer.getX() + " " + currentPlayer.getY());
+            // Obtenir le joueur actuel
+            Players currentPlayer = game.getPlayers()[currentPlayerIndex];
+            System.out.println("\n" + currentPlayer.getName() + "'s turn!");
 
                 // Move the player
                 currentPlayer.move(currentPlayer.getX(), currentPlayer.getY(), game.getGrid().grid, currentPlayer, currentPlayer.getName(), game.getPlayers());
@@ -222,6 +230,37 @@ public class MainMenu {
                 game.getGrid().destroy();
                 game.getGrid().displayGrid(game.getPlayers());
 
+                currentPlayerIndex = (currentPlayerIndex + 1) % nbPlayers;
+                turnCounter++;
+                // Vérifier si tous les joueurs ont joué leur tour
+                if (turnCounter % nbPlayers <= 0 && hasBot) {
+                    System.out.println("BotTour");
+                    Bot currentBot = game.getBot();
+                    Random random = new Random();
+                    int gridSize = game.getGrid().getSize(); // Taille de la grille
+
+                    boolean validMove = false;
+                    int newX = currentBot.getX();
+                    int newY = currentBot.getY();
+
+                    // Générer un mouvement valide pour le bot
+                    while (!validMove) {
+                        int moveDistance = random.nextInt(3) + 1;
+                        newX = currentBot.getX() + (random.nextBoolean() ? moveDistance : -moveDistance);
+                        newY = currentBot.getY() + (random.nextBoolean() ? moveDistance : -moveDistance);
+
+                        // Vérifier que les nouvelles coordonnées sont valides et que la case n'est pas occupée
+                        if (newX >= 0 && newX < gridSize && newY >= 0 && newY < gridSize) {
+                            char targetCell = game.getGrid().grid[newX][newY]; // Récupérer le contenu de la case cible
+                            if (targetCell != '#' && targetCell != 'J') { // Vérifier que ce n'est pas un obstacle ou un joueur
+                                validMove = true;
+                            }
+                        }
+                    }
+
+                    currentBot.moveTo(game.getGrid().grid, newX, newY);
+                    System.out.println("Bot moved to new position: (" + newX + ", " + newY + ")");
+                }
                 // Check if the current player is stuck
                 if (game.endgame(currentPlayer, game.getGrid().grid)) {
                     System.out.println(                 currentPlayer.getName() + " is stuck and out of the game!");
@@ -234,8 +273,6 @@ public class MainMenu {
                         break;
                     }
                 }
-                //Skip to next player
-                currentPlayerIndex = (currentPlayerIndex + 1) % nbPlayers;
             }
         }
     }
