@@ -106,12 +106,15 @@ public class Game {
         // Check if the current player is stuck
         if (checkEndGame(currentPlayer, getGrid().grid)) {
             System.out.println(                 currentPlayer.getName() + " is stuck and out of the game!");
+            Save_score saveScore = new Save_score();
+            saveScore.updateScore(currentPlayer.getName(), -2); // Decrease the score by 2
             removePlayer(currentPlayer); // Remove the player from the game
             Main.nbPlayers--;
 
             // Check if only one player remains
             if (Main.nbPlayers == 1) {
                 Main.gameRunning = false;
+                saveScore.updateScore(getPlayers()[0].getName(), 5); // Increase the score by 5
                 System.out.println("\n                 Game Over! The winner is " + getPlayers()[0].getName() + "!");
 
                 //NEED BREACK
