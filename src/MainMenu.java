@@ -1,8 +1,8 @@
-import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 import java.util.Scanner;
+import javax.sound.sampled.*;
 
 public class MainMenu {
     public static boolean withBot = true;
@@ -49,6 +49,7 @@ public class MainMenu {
                     case "5":
                         showScore();
                         waitForReturnToMenu();
+                        break;
                     case "6":
                         quit = true;
                         System.out.println("Thanks for playing. See you next time!");
@@ -77,6 +78,7 @@ public class MainMenu {
     private static void drawTitle() {
         final String RESET = "\u001B[0m";
         final String YELLOW = "\u001B[33m";
+        
 
         System.out.println(YELLOW + " ______  ______ ______  ______  ______       ______ ______  ______  __  ______ __  ______  __   __    \n" +
                 "/\\  ___\\/\\  == /\\  __ \\/\\  ___\\/\\  ___\\     /\\  == /\\  __ \\/\\  ___\\/\\ \\/\\__  _/\\ \\/\\  __ \\/\\ \"-.\\ \\   \n" +
@@ -353,6 +355,7 @@ public class MainMenu {
     }
 
     private static void showScore(){
+        final String YELLOW = "\u001B[33m";
         final String BLUE = "\u001B[34m";
         final String RESET = "\u001B[0m";
         // Create a new instance of the fast_sorting class
@@ -366,7 +369,7 @@ public class MainMenu {
         System.out.println("                 =========================== SCORES ============================ \n");
         // display table
         for (String[] entry : scoresArray) {
-            System.out.println(entry[0] + " : " + entry[1]);
+            System.out.println("                                        "+BLUE + entry[0] + RESET + " : " + YELLOW + entry[1] + RESET);
         }
         System.out.println("                 ================================================================== ");
     }
