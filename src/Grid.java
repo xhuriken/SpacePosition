@@ -137,39 +137,63 @@ public class Grid {
         Scanner scanner = new Scanner(System.in);
         int CoordXi;
         int CoordYi;
+        int CoordZi;
         short CoordXg = 0;
         short CoordYg = 0;
+
         //As long as Choice is true, we continue
         while (Choice == true){
             
             System.out.print("                 Enter coordinates to destroy boxes like 'a2': ");
             String coords = scanner.next();
 
-            //Split the coordinates
-            if (coords.length() == 2){
-                //Check if the first character is a letter
-                if(Character.isLetter(coords.charAt(0))){
-                    //Get the first character
+            if (coords.length() <= 3) {
+                // Check if the first character is a letter
+                if (Character.isLetter(coords.charAt(0))) {
+                    // Get the first character
                     char CoordXChar = coords.charAt(0);
-                    if(Character.isDigit(coords.charAt(1))){
-                        //Get the second character
-                        char CoordYChar = coords.charAt(1);
+                    // Check if the second character is a digit
+                    if (Character.isDigit(coords.charAt(1))) {
+                        // If the string has a third character
+                        if (coords.length() == 3) {
+                            // Check if the third character is also a digit
+                            if (Character.isDigit(coords.charAt(2))) {
+                                char CoordZChar = coords.charAt(2);
 
-                        //sends one character per variable
-                        CoordXi = CoordXChar % 97 ;
-                        CoordYi = CoordYChar % 48 ;
+                                // Process the characters as integers
+                                CoordXi = CoordXChar % 97;
+                                CoordYi = coords.charAt(1) % 48;
+                                CoordZi = coords.charAt(2) % 48;
 
-                        CoordXg = (short) CoordXi ;
-                        CoordYg = (short) CoordYi ;
+                                CoordXg = (short) CoordXi;
+                                CoordYg = (short) (CoordYi + CoordZi);
 
-                    }else{
-                        System.err.println("                 Vos coordonnées ne finissent pas par un chiffre");
+
+                                System.err.println(CoordXg);
+                                System.err.println(CoordYg);
+
+                            } else {
+                                System.err.println("The third character is not a digit");
+                            }
+                        } else {
+                            // If the string contains only two characters
+                            CoordXi = CoordXChar % 97;
+                            CoordYi = coords.charAt(1) % 48;
+
+                            CoordXg = (short) CoordXi;
+                            CoordYg = (short) CoordYi;
+
+                            System.err.println(CoordXg);
+                            System.err.println(CoordYg);
+                        }
+                    } else {
+                        System.err.println("The second character is not a digit");
                     }
-                }else{
-                    System.err.println("                 Vos coordonnées ne commence pas par une lettre");
+                } else {
+                    System.err.println("The first character is not a letter");
                 }
-            }else{
-                System.err.println("                 Chaine de caractère trop longue");
+            } else {
+                System.err.println("The string is too long");
             }
 
             //Check whether the coordinates are outside the table 
