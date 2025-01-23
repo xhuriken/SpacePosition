@@ -1,11 +1,8 @@
-import java.util.Scanner;
-import java.util.Random;
-
 public class Game {
 
-    private static Grid grid;
+    private Grid grid;
     private Players[] players;
-    private static Bot bot; // Un bot unique
+    private Bot bot;
     private byte nbPlayer;
     private char[][] gridload;
 
@@ -53,7 +50,7 @@ public class Game {
         }
         else{
             // Get the player names dynamically based on the number of players
-            String[] playerNames = MainMenu.PlayerNames(nbPlayer);
+            String[] playerNames = MainMenu.playerNames(nbPlayer);
 
             // Define colors for each player
             String[] playerColors = {"\u001B[31m", "\u001B[34m", "\u001B[32m", "\u001B[33m"}; // Red, Blue, Green, Yellow
@@ -68,27 +65,6 @@ public class Game {
             // Place each player on the grid
             for (Players player : players) {
                 grid.place(player);
-            }
-        }
-    }
-
-    /**
-     * Function for place the minigame bot in grid
-     */
-    public static void placeBotOnGrid() {
-
-        Random random = new Random();
-        int gridSize = grid.getSize();
-
-        while (true) {
-            int x = random.nextInt(gridSize);
-            int y = random.nextInt(gridSize);
-
-            // Vérifier si la case est vide avant de placer le bot
-            if (grid.isCellEmpty(x, y)) {
-                bot.setPosition(x, y);
-                grid.placeBot(bot);
-                break;
             }
         }
     }
@@ -118,7 +94,7 @@ public class Game {
      * @param grid
      * @return true
      */
-    public boolean endgame(Players currentPlayers , char[][] grid) {
+    public boolean checkEndGame(Players currentPlayers , char[][] grid) {
 
         int cordx = currentPlayers.getX();
         int cordy = currentPlayers.getY();
@@ -126,6 +102,23 @@ public class Game {
         return grid[cordx + 1][cordy] != '.' && grid[cordx - 1][cordy] != '.' && grid[cordx][cordy + 1] != '.' && grid[cordx][cordy - 1] != '.';
     }
 
+    public void endGameLogic(Players currentPlayer){
+        // Check if the current player is stuck
+        if (checkEndGame(currentPlayer, getGrid().grid)) {
+            System.out.println(                 currentPlayer.getName() + " is stuck and out of the game!");
+            removePlayer(currentPlayer); // Remove the player from the game
+            Main.nbPlayers--;
+
+            // Check if only one player remains
+            if (Main.nbPlayers == 1) {
+                Main.gameRunning = false;
+                System.out.println("\n                 Game Over! The winner is " + getPlayers()[0].getName() + "!");
+
+                //NEED BREACK
+
+            }
+        }
+    }
     /**
      * Function for remove player object from the Game object.
      * @param playerToRemove
@@ -139,7 +132,6 @@ public class Game {
                 newPlayers[index++] = player;
             }
         }
-
         players = newPlayers;
     }
 }

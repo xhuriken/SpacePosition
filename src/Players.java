@@ -80,9 +80,9 @@ public class Players implements Serializable {
                 case "qs":
                     Save_data save = new Save_data(players, grid);
                     save.save();
-                    MainMenu.SetupMenu();
+                    MainMenu.setupMenu();
                 case "quit":
-                    MainMenu.SetupMenu();
+                    MainMenu.setupMenu();
                 default:
                     System.out.println("                 Veuillez entrer une lettre valide");
                     continue;

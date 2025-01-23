@@ -1,7 +1,6 @@
 import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.Random;
 import java.util.Scanner;
 
 public class MainMenu {
@@ -9,7 +8,7 @@ public class MainMenu {
     /**
      * Function for start the menu
      */
-    public static void SetupMenu(){
+    public static void setupMenu(){
         // Load and play background music
         Clip ambiance = loadSound("Theme.wav");
 
@@ -26,13 +25,13 @@ public class MainMenu {
             drawTitle();
             displayMainMenu();
             // Get user's choice
-            System.out.print("Enter your choice: ");
+            System.out.print("                 Enter your choice: ");
             if (scanner.hasNextLine()){
                 String choice = scanner.nextLine();
                 // Handle the user's choice
                 switch (choice) {
                     case "1":
-                        playGame(false);
+                        Main.playGame(false);
                         waitForReturnToMenu();
                         break;
                     case "2":
@@ -51,10 +50,10 @@ public class MainMenu {
                         waitForReturnToMenu();
                     case "6":
                         quit = true;
-                        System.out.println("Thanks for playing. See you next time!");
+                        System.out.println("                 Thanks for playing. See you next time!");
                         break;
                     default:
-                        System.out.println("Invalid choice. Please try again.");
+                        System.out.println("                 Invalid choice. Please try again.");
                         break;
                 }
             }
@@ -130,154 +129,6 @@ public class MainMenu {
     }
 
     /**
-     * Function for start the game
-     */
-    private static void playGame(boolean isGameLoaded) {
-
-        if (isGameLoaded) {
-
-            System.out.println("Game loaded successfully.");
-            boolean gameRunning = true;
-            int currentPlayerIndex = 0;
-            int nbPlayers = 2;
-            Game game = new Game((byte) nbPlayers, isGameLoaded);
-
-            while (gameRunning) {
-                // Display the grid
-                Main.clearScreen();
-                // Get the current player
-                Players currentPlayer = game.getPlayers()[currentPlayerIndex];
-                System.out.println("\n                 " + currentPlayer.getName() + "'s turn!");
-                //System.out.println(currentPlayer.getX() + " " + currentPlayer.getY());
-
-                // Move the player
-                currentPlayer.move(currentPlayer.getX(), currentPlayer.getY(), game.getGrid().grid, currentPlayer, currentPlayer.getName(), game.getPlayers());
-                game.getGrid().displayGrid(game.getPlayers());
-                // Destroy a square
-                game.getGrid().destroy();
-                game.getGrid().displayGrid(game.getPlayers());
-
-                // Check if the current player is stuck
-                if (game.endgame(currentPlayer, game.getGrid().grid)) {
-                    System.out.println(                 currentPlayer.getName() + " is stuck and out of the game!");
-                    game.removePlayer(currentPlayer); // Remove the player from the game
-                    nbPlayers--;
-
-                    // Check if only one player remains
-                    if (nbPlayers == 1) {
-                        gameRunning = false;
-                        System.out.println("\n                 Game Over! The winner is " + game.getPlayers()[0].getName() + "!");
-                        break;
-                    }
-                }
-
-                currentPlayerIndex = (currentPlayerIndex + 1) % nbPlayers;
-            }
-        } else {
-            System.out.println("                 Starting a new game...");
-            Scanner sc = new Scanner(System.in);
-
-
-            // Submenu for game mode selection
-            System.out.println("                 Choose your game mode:");
-            System.out.println("                   1. Player vs Player");
-            System.out.println("                   2. Player vs Bot");
-            System.out.print("                 Enter your choice: ");
-            String modeChoice = sc.nextLine();
-
-            // Validate the choice
-            while (!modeChoice.equals("1") && !modeChoice.equals("2")) {
-                System.out.println("Invalid choice. Please enter 1 or 2.");
-                System.out.print("                 Enter your choice: ");
-                modeChoice = sc.nextLine();
-            }
-
-            // Ask the number of players
-            System.out.print("                 How many players? (2 to 4): ");
-            int nbPlayers = sc.nextInt();
-            sc.nextLine(); // Consume newline
-        // Initialize the game
-        Game game = new Game((byte) nbPlayers, isGameLoaded);
-
-        // Determine if bot is included
-        boolean hasBot = modeChoice.equals("2");
-
-        if (hasBot) {
-            Game.placeBotOnGrid();
-        }
-
-        boolean gameRunning = true;
-        Random rand = new Random();
-        int currentPlayerIndex = 0;
-        currentPlayerIndex = (currentPlayerIndex + rand.nextInt(nbPlayers));
-        game.getGrid().displayGrid(game.getPlayers());
-
-        int turnCounter = 0; // Compteur de tours pour suivre le moment où le bot doit jouer
-
-        while (gameRunning) {
-            // Afficher la grille
-            game.getGrid().displayGrid(game.getPlayers());
-
-            // Obtenir le joueur actuel
-            Players currentPlayer = game.getPlayers()[currentPlayerIndex];
-            System.out.println("\n" + currentPlayer.getName() + "'s turn!");
-
-                // Move the player
-                currentPlayer.move(currentPlayer.getX(), currentPlayer.getY(), game.getGrid().grid, currentPlayer, currentPlayer.getName(), game.getPlayers());
-                game.getGrid().displayGrid(game.getPlayers());
-
-                // Destroy a square
-                game.getGrid().destroy();
-                game.getGrid().displayGrid(game.getPlayers());
-
-                currentPlayerIndex = (currentPlayerIndex + 1) % nbPlayers;
-                turnCounter++;
-                // Vérifier si tous les joueurs ont joué leur tour
-                if (turnCounter % nbPlayers <= 0 && hasBot) {
-                    System.out.println("BotTour");
-                    Bot currentBot = game.getBot();
-                    Random random = new Random();
-                    int gridSize = game.getGrid().getSize(); // Taille de la grille
-
-                    boolean validMove = false;
-                    int newX = currentBot.getX();
-                    int newY = currentBot.getY();
-
-                    // Générer un mouvement valide pour le bot
-                    while (!validMove) {
-                        int moveDistance = random.nextInt(3) + 1;
-                        newX = currentBot.getX() + (random.nextBoolean() ? moveDistance : -moveDistance);
-                        newY = currentBot.getY() + (random.nextBoolean() ? moveDistance : -moveDistance);
-
-                        // Vérifier que les nouvelles coordonnées sont valides et que la case n'est pas occupée
-                        if (newX >= 0 && newX < gridSize && newY >= 0 && newY < gridSize) {
-                            char targetCell = game.getGrid().grid[newX][newY]; // Récupérer le contenu de la case cible
-                            if (targetCell != '#' && targetCell != 'J') { // Vérifier que ce n'est pas un obstacle ou un joueur
-                                validMove = true;
-                            }
-                        }
-                    }
-
-                    currentBot.moveTo(game.getGrid().grid, newX, newY);
-                    System.out.println("Bot moved to new position: (" + newX + ", " + newY + ")");
-                }
-                // Check if the current player is stuck
-                if (game.endgame(currentPlayer, game.getGrid().grid)) {
-                    System.out.println(                 currentPlayer.getName() + " is stuck and out of the game!");
-                    game.removePlayer(currentPlayer); // Remove the player from the game
-                    nbPlayers--;
-                    // Check if only one player remains
-                    if (nbPlayers == 1) {
-                        gameRunning = false;
-                        System.out.println("\n                 Game Over! The winner is " + game.getPlayers()[0].getName() + "!");
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
-    /**
      * Function for show Rules in cli
      */
     private static void showRules() {
@@ -318,12 +169,12 @@ public class MainMenu {
         while (true) {
             // File name
             fichier = new File("joueurs_" + compteur + ".bin");
-                if (compteur % 2 == 0){
-                    color =  "\u001B[34m";
-                }
-                else{
-                    color = "\u001B[33m";
-                }
+            if (compteur % 2 == 0){
+                color =  "\u001B[34m";
+            }
+            else{
+                color = "\u001B[33m";
+            }
             if (fichier.exists()) { // Check if the file exists
                 System.out.println("" + color + "["+compteur+" : joueurs"+"_" + compteur + ".bin]"+RESET);
             } else {
@@ -332,22 +183,31 @@ public class MainMenu {
             compteur++; // Increment the counter
         }
         System.out.println(""+color+ "["+compteur+" : quit]"+RESET);
-        System.out.println("                 ================================================================== ");
+        System.out.println("                 ============================================================= \n");
         Scanner scannerChoice = new Scanner(System.in);
-        if (scannerChoice.hasNextLine()){
+        if (scannerChoice.hasNextLine()) {
             String choice = scannerChoice.nextLine();
             System.out.println("You entered: " + choice);
+
+            // Check if the user wants to quit
+            if (choice.equalsIgnoreCase("quit")) {
+                MainMenu.displayMainMenu();
+                return;
+            }
             try {
-                if (choice.equals("quit")) {
-                    MainMenu.displayMainMenu();
-                } else if (Integer.parseInt(choice) < compteur) {
+                // If entry is a number
+                int choiceNumber = Integer.parseInt(choice);
+                // number is valid
+                if (choiceNumber < compteur) {
                     Load_data.Load_data(choice);
-                    playGame(true);
+                    Main.playGame(true);
                 } else {
                     System.out.println("Invalid choice. Please try again.");
+                    showLoad();
                 }
-            } catch (AssertionError e) {
-                System.out.println("Invalid choice. Please try again.");
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid number or type 'quit' to exit.");
+                showLoad();
             }
         }
     }
@@ -378,7 +238,7 @@ public class MainMenu {
      * @param numberOfPlayers
      * @return String[]
      */
-    public static String[] PlayerNames(int numberOfPlayers) {
+    public static String[] playerNames(int numberOfPlayers) {
         Scanner sc = new Scanner(System.in);
         String[] playerNames = new String[numberOfPlayers];
 
@@ -403,7 +263,6 @@ public class MainMenu {
         }
         return playerNames;
     }
-
 
     /**
      * Function for load Sound

@@ -1,4 +1,4 @@
-
+import java.util.Random;
 import java.util.Scanner;
 
 public class Grid {
@@ -56,11 +56,27 @@ public class Grid {
     }
 
     /**
-     * Function for spawn player in the grid
-     * @param bot
+     * Function to place a bot randomly on the grid.
      */
-    public void placeBot(Bot bot) {
-        grid[bot.getX()][bot.getY()] = 'B';
+    public void placeBotOnGrid() {
+        Random random = new Random();
+        int rows = grid.length;
+        int cols = grid[0].length;
+
+        int x, y;
+        boolean placed = false;
+
+        while (!placed) {
+            // Generate random coordinates
+            x = random.nextInt(rows);
+            y = random.nextInt(cols);
+
+            // Check if the cell is empty
+            if (isCellEmpty(x, y)) {
+                grid[x][y] = 'B'; // Place the bot on the grid
+                placed = true;
+            }
+        }
     }
 
     /**
@@ -113,21 +129,20 @@ public class Grid {
             System.out.println(); // Move to the next row
         }
     }
-    /*
-      * Pseudo code de la fonction destroy
-      * Il faut demander au joueur de rentrer des coordonnées (ex : a2)
-      * Recup les coordonnées dans un string
-      * boucle for pour split le string
-      * quand i = 2, on recupere la valeur de x
-      *
-      */
 
     public boolean isCellEmpty(int x, int y) {
         // Vérifiez si la case est vide (par exemple, avec '.' pour les cases libres)
         return this.grid[x][y] == '.';
     }
 
-
+    /*
+     * Pseudo code de la fonction destroy
+     * Il faut demander au joueur de rentrer des coordonnées (ex : a2)
+     * Recup les coordonnées dans un string
+     * boucle for pour split le string
+     * quand i = 2, on recupere la valeur de x
+     *
+     */
     /**
      * Function for destroy case
      */
@@ -142,7 +157,7 @@ public class Grid {
         short CoordYg = 0;
 
         //As long as Choice is true, we continue
-        while (Choice == true){
+        while (Choice){
             
             System.out.print("                 Enter coordinates to destroy boxes like 'a2': ");
             String coords = scanner.next();
