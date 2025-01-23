@@ -1,7 +1,7 @@
-import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
+import javax.sound.sampled.*;
 
 public class MainMenu {
     public static boolean withBot = true;
@@ -48,6 +48,7 @@ public class MainMenu {
                     case "5":
                         showScore();
                         waitForReturnToMenu();
+                        break;
                     case "6":
                         quit = true;
                         System.out.println("                 Thanks for playing. See you next time!");
@@ -156,65 +157,98 @@ public class MainMenu {
 
     private static void showLoad() {
         final String BLUE = "\u001B[34m";
+        final String YELLOW = "\u001B[33m";
         final String RESET = "\u001B[0m";
         System.out.println("                 =========================== LOAD ============================ \n");
+
         int compteur = 1;
         File fichier;
-        String color = null; // Declare color variable
-        fichier = new File("joueurs" + "_" + compteur + "." + "bin" );
+        String color;
+
         while (true) {
-            // File name
             fichier = new File("joueurs_" + compteur + ".bin");
-            if (compteur % 2 == 0){
-                color =  "\u001B[34m";
-            }
-            else{
-                color = "\u001B[33m";
-            }
-            if (fichier.exists()) { // Check if the file exists
-                System.out.println("" + color + "["+compteur+" : joueurs"+"_" + compteur + ".bin]"+RESET);
+            if (compteur % 2 == 0) {
+                color = BLUE;
             } else {
-                break; // Stop the loop if the file does not exist
+                color = YELLOW;
             }
-            compteur++; // Increment the counter
+            if (fichier.exists()) {
+                System.out.println(color + "[" + compteur + " : joueurs_" + compteur + ".bin]" + RESET);
+            } else {
+                break;
+            }
+            compteur++;
         }
-        System.out.println(""+color+ "["+compteur+" : quit]"+RESET);
-        System.out.println("                 ============================================================= \n");
+        // Display the quit option
+        System.out.println("" + color + "[" + compteur + " : quit]" + RESET);
+        System.out.println("                 ================================================================== ");
+
         Scanner scannerChoice = new Scanner(System.in);
         if (scannerChoice.hasNextLine()) {
-            String choice = scannerChoice.nextLine();
+            String choice = scannerChoice.nextLine().trim();
             System.out.println("You entered: " + choice);
 
-            // Check if the user wants to quit
-            if (choice.equalsIgnoreCase("quit")) {
-                MainMenu.displayMainMenu();
-                return;
-            }
             try {
-                // If entry is a number
-                int choiceNumber = Integer.parseInt(choice);
-                // number is valid
-                if (choiceNumber < compteur) {
-                    Load_data.Load_data(choice);
-                    Main.playGame(true);
-                } else {
-                    System.out.println("Invalid choice. Please try again.");
+                if (choice.isEmpty()) {
+                    System.out.println("Invalid input. Please enter a valid number or 'quit'.");
                     showLoad();
+                } else if (choice.equalsIgnoreCase("quit") || Integer.parseInt(choice) == compteur) {
+                    displayMainMenu();
+                } else {
+                    int choiceNumber = Integer.parseInt(choice);
+                    if (choiceNumber > 0 && choiceNumber < compteur) {
+                        Load_data.Load_data(choice);
+                        playGame(true);
+                    } else {
+                        System.out.println("Invalid choice. Please try again.");
+                        showLoad();
+                    }
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a valid number or type 'quit' to exit.");
+                System.out.println("Invalid input. Please enter a valid number or 'quit'.");
                 showLoad();
             }
         }
     }
 
     private static void showScore(){
+        final String YELLOW = "\u001B[33m";
         final String BLUE = "\u001B[34m";
         final String RESET = "\u001B[0m";
-        //Display data [player][Scores]
         System.out.println("                 =========================== SCORES ============================ \n");
-        // System.out.print();
-        System.out.println("                 ================================================================== ");
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Do you want the scores in ascending or descending order?");
+        System.out.println("["+YELLOW+"1 "+RESET+": "+BLUE+"Ascending]"+RESET);
+        System.out.println("["+YELLOW+"2"+RESET+" : "+BLUE+"Descending]"+RESET);
+        System.out.print("Enter your choice: ");
+
+        // Create a new instance of the fast_sorting class
+        fast_sorting sorter = new fast_sorting();
+        // Retrieve the scoreboard
+        String[][] scoresArray = sorter.Datascore();
+
+
+        String choice = scanner.nextLine();
+        if (choice.equals("1")) {
+            sorter.quickSort(scoresArray, 0, scoresArray.length - 1, false);
+            for (String[] entry : scoresArray) {
+                System.out.println("                                        "+BLUE + entry[0] + RESET + " : " + YELLOW + entry[1] + RESET);
+
+            }
+            System.out.println("                 ================================================================== ");
+        } else if (choice.equals("2")) {
+            sorter.quickSort(scoresArray, 0, scoresArray.length - 1,true);
+            for (String[] entry : scoresArray) {
+                System.out.println("                                        "+BLUE + entry[0] + RESET + " : " + YELLOW + entry[1] + RESET);
+
+            }
+            System.out.println("                 ================================================================== ");
+        } else {
+            System.out.println("Invalid choice. Please try again.");
+            showScore();
+        }
+
+
     }
 
     /**
