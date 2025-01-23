@@ -1,3 +1,6 @@
+/**
+ * Load_data - A class to load players and grid data from binary files.
+ */
 import java.io.*;
 
 public class Load_data {

@@ -2,6 +2,9 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Save_score - Manages saving and loading player scores to/from a binary file.
+ */
 public class Save_score {
 
     private static final String SCORE_FILE = "scores.bin"; // File name for storing scores
@@ -12,7 +15,6 @@ public class Save_score {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(SCORE_FILE))) {
             return (Map<String, Integer>) in.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            // Log the error and return an empty map if there's an issue with the file
             System.err.println("Error loading scores: " + e.getMessage());
             return new HashMap<>();
         }
@@ -40,8 +42,7 @@ public class Save_score {
 
     // Convert scores to a simple array of strings
     public String[][] ScorestoSimpleArray() {
-        // Array 2d 
-        String[][] scoresArray = new String[scores.size()][2];  
+        String[][] scoresArray = new String[scores.size()][2];
         int index = 0;
         for (Map.Entry<String, Integer> entry : scores.entrySet()) {
             scoresArray[index][0] = entry.getKey();  // Name
@@ -50,5 +51,4 @@ public class Save_score {
         }
         return scoresArray;
     }
-
 }
