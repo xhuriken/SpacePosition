@@ -11,7 +11,8 @@ public class Main {
     static int currentPlayerIndex = 0;
     static int nbPlayers = 0;
     static Bot currentBot = null;
-
+    static Game game = null;
+    static boolean isFinish = false;
     public static void main(String[] args) {
         MainMenu.setupMenu();
     }
@@ -20,10 +21,15 @@ public class Main {
      * Function for start the game
      */
     public static void playGame(boolean isGameLoaded) {
-
+        gameRunning = true;
         if (isGameLoaded) {
+            if(isFinish){
+                return;
+            }
             System.out.println("                 Game loaded successfully.");
-            Game game = new Game((byte) nbPlayers, isGameLoaded);
+            game = new Game((byte) nbPlayers, isGameLoaded);
+            clearScreen();
+            MainMenu.drawTitle();
             game.getGrid().displayGrid(game.getPlayers());
             while (gameRunning) {
                 // Get the current player
@@ -32,9 +38,13 @@ public class Main {
                 //System.out.println(currentPlayer.getX() + " " + currentPlayer.getY());
                 // Move the player
                 currentPlayer.move(currentPlayer.getX(), currentPlayer.getY(), game.getGrid().grid, currentPlayer, currentPlayer.getName(), game.getPlayers());
+                clearScreen();
+                MainMenu.drawTitle();
                 game.getGrid().displayGrid(game.getPlayers());
                 // Destroy a square
                 game.getGrid().destroy();
+                clearScreen();
+                MainMenu.drawTitle();
                 game.getGrid().displayGrid(game.getPlayers());
                 game.endGameLogic(currentPlayer);
                 currentPlayerIndex = (currentPlayerIndex + 1) % nbPlayers;
@@ -42,6 +52,9 @@ public class Main {
         }
         else
         {
+            if(isFinish){
+                return;
+            }
             System.out.println("                 Starting a new game...");
             Scanner sc = new Scanner(System.in);
 
@@ -61,7 +74,7 @@ public class Main {
 
             askPlayersQuantity(sc);
 
-            Game game = new Game((byte) nbPlayers, isGameLoaded);
+            game = new Game((byte) nbPlayers, isGameLoaded);
             // Determine if bot is included
             boolean hasBot = modeChoice.equals("2");
 
@@ -73,22 +86,30 @@ public class Main {
 
             Random rand = new Random();
             currentPlayerIndex = (currentPlayerIndex + rand.nextInt(nbPlayers));
+            clearScreen();
+            MainMenu.drawTitle();
             game.getGrid().displayGrid(game.getPlayers());
 
             int turnCounter = 0; // Compteur de tours pour suivre le moment où le bot doit jouer
 
             while (gameRunning) {
-
+                if(isFinish){
+                    return;
+                }
                 // Obtenir le joueur actuel
                 Players currentPlayer = game.getPlayers()[currentPlayerIndex];
                 System.out.println("                 " + currentPlayer.getName() + "'s turn!");
 
                 // Move the player
                 currentPlayer.move(currentPlayer.getX(), currentPlayer.getY(), game.getGrid().grid, currentPlayer, currentPlayer.getName(), game.getPlayers());
+                clearScreen();
+                MainMenu.drawTitle();
                 game.getGrid().displayGrid(game.getPlayers());
 
                 // Destroy a square
                 game.getGrid().destroy();
+                clearScreen();
+                MainMenu.drawTitle();
                 game.getGrid().displayGrid(game.getPlayers());
 
                 currentPlayerIndex = (currentPlayerIndex + 1) % nbPlayers;
@@ -118,6 +139,8 @@ public class Main {
                         }
                     }
                     currentBot.moveTo(game.getGrid().grid, newX, newY);
+                    clearScreen();
+                    MainMenu.drawTitle();
                     game.getGrid().displayGrid(game.getPlayers());
 
                     //System.out.println("Bot moved to new position: (" + newX + ", " + newY + ")");

@@ -31,6 +31,7 @@ public class MainMenu {
                 // Handle the user's choice
                 switch (choice) {
                     case "1":
+                        Main.isFinish = false;
                         Main.playGame(false);
                         waitForReturnToMenu();
                         break;
@@ -50,8 +51,10 @@ public class MainMenu {
                         waitForReturnToMenu();
                         break;
                     case "6":
-                        quit = true;
+                        Main.gameRunning = false;
                         System.out.println("                 Thanks for playing. See you next time!");
+                        System.exit(0);
+                        quit = true;
                         break;
                     default:
                         System.out.println("                 Invalid choice. Please try again.");
@@ -74,7 +77,7 @@ public class MainMenu {
     /**
      * Function for show the game Title in cli
      */
-    private static void drawTitle() {
+    public static void drawTitle() {
         final String RESET = "\u001B[0m";
         final String YELLOW = "\u001B[33m";
 

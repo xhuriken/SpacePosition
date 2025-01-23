@@ -119,6 +119,12 @@ public class Game {
                 saveScore.updateScore(getPlayers()[0].getName(), 5); // Increase the score by 5
                 System.out.println("\n                 Game Over! The winner is " + getPlayers()[0].getName() + "!");
 
+                Main.currentPlayerIndex = 0;
+                Main.nbPlayers = 0;
+                Main.currentBot = null;
+                Main.game = null;
+                Main.isFinish = true;
+                //MainMenu.setupMenu();
                 //NEED BREACK
 
             }

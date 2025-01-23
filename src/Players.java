@@ -58,7 +58,7 @@ public class Players implements Serializable {
         boolean validMove = false;
 
         while (!validMove) {
-            System.out.print  ("                 Enter your move (z, q, s, d):");
+            System.out.print  ("                 Enter your move (Z, Q, S, D):");
             System.out.print  ("                 Or type 'qs' to save and quit the game.");
             System.out.println("                 or type 'quit' to quit the game.");
             System.out.print  ("                 Type... :");
@@ -84,8 +84,12 @@ public class Players implements Serializable {
                     Save_data save = new Save_data(players, grid);
                     save.save();
                     MainMenu.setupMenu();
+                    Main.gameRunning = false;
+                    break;
                 case "quit":
                     MainMenu.setupMenu();
+                    Main.gameRunning = false;
+                    break;
                 default:
                     System.out.println("                 Please enter a valid move.");
                     continue;
